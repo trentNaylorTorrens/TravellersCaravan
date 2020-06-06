@@ -6,24 +6,34 @@ using System.Threading;
 
 public class GameManager : MonoBehaviour
 {
+    public int totalMatchesRequired;//Set this first.
+    public int currentMatches;
     //Master
     public GameObject allBoxesMaster;
     public GameObject allSpawnPosMaster;
-    public List<GameObject> itemRepo;
+    public List<GameObject> completeItemRepo;
+    public List<GameObject> currentItemsInUse;
 
     //Reference
     public List<Transform> allBoxes = new List<Transform>();
     public List<Transform> allSpawnPoints = new List<Transform>();
-    public List<GameObject> allItems = new List<GameObject>();
+    public List<GameObject> allItemsInBoxes = new List<GameObject>();
 
     //Gameplay
     public bool playerCanInput = true;
-    public int boxSelectionOne = -1; //Default -1 = nothing.
-    public int boxSelectionTwo = -1; //Default -1 = nothing.
+    public Item firstItem;
+    public Item secondItem;
+
+    public int boxSelection = 0; //Are we selection the first of second box.
+    
+  
 
     // Start is called before the first frame update
     void Start()
     {
+        //Item Setup;
+        SetupItems();
+        //Setup Level Boxes
         SetupBoxes();
     }
 
@@ -41,14 +51,17 @@ public class GameManager : MonoBehaviour
                 {
                     if(hitinfo.transform.tag == "Box")
                     {
-                        if(boxSelectionOne < 0) //We need to select first box
+                        if(boxSelection == 0) //We need to select first box
                         {
-                            boxSelectionOne = FindBoxInSet(hitinfo.transform.parent);
+                            boxSelection = 1; //First box clicked.
+                            int tempI = FindBoxInSet(hitinfo.transform.parent);
+                            firstItem = allItemsInBoxes[tempI].GetComponent<Item>();
                             hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
                         }
-                        else if(boxSelectionTwo < 0)
+                        else if(boxSelection == 1)
                         {
-                            boxSelectionTwo = FindBoxInSet(hitinfo.transform.parent);
+                            int tempI = FindBoxInSet(hitinfo.transform.parent);
+                            secondItem = allItemsInBoxes[tempI].GetComponent<Item>();
                             hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
                             StartCoroutine(CheckBoxesSequence());
                         }
@@ -66,18 +79,47 @@ public class GameManager : MonoBehaviour
 
     IEnumerator CheckBoxesSequence()
     {
+        //Check for Match
+
         playerCanInput = false;
-        yield return new WaitForSeconds(2);
-        //Animate
-        allBoxes[boxSelectionOne].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
-        allBoxes[boxSelectionTwo].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
 
+        bool isMatch = false;
+        if(firstItem.itemID == secondItem.itemID)
+        {
+            isMatch = true; //isMatch Event
+        }
+        if(isMatch) //Match!
+        {
+            EventManager.instance.PatternMatch();
+        }
+        else //not a match
+        {
+            EventManager.instance.PatternMisMatch();
+            yield return new WaitForSeconds(2);
+            //Animate
+            allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
+            allBoxes[secondItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
+        }
         //Reset
-        boxSelectionOne = -1;
-        boxSelectionTwo = -1;
-
+        boxSelection = 0;
         yield return new WaitForSeconds(1);
         playerCanInput = true;
+    }
+
+    void SetupItems()
+    {
+        //Spawn a set of items to use from a repository of items
+        completeItemRepo.Shuffle();
+
+        for (int i = 0; i < totalMatchesRequired; i++)
+        {
+            currentItemsInUse.Add(completeItemRepo[i]);
+        }
+
+        for (int i = 0; i < currentItemsInUse.Count; i++)
+        {
+            currentItemsInUse[i].GetComponent<Item>().itemID = i;
+        }
     }
 
     void SetupBoxes()
@@ -92,29 +134,49 @@ public class GameManager : MonoBehaviour
         }
 
         //Insert random spawner of items here.
-        int counter = 3;
+        int counter = 2;
 
-        foreach(GameObject ip in itemRepo)
+        foreach(GameObject ip in currentItemsInUse)
         {
             for (int i = 0; i < counter; i++)
             {
                 GameObject go = Instantiate(ip) as GameObject;
-                allItems.Add(go);
+                allItemsInBoxes.Add(go);
             }
         }
 
-        allItems.Shuffle();
+        allItemsInBoxes.Shuffle();
 
-        for (int i = 0; i < allItems.Count; i++)
+        for (int i = 0; i < allItemsInBoxes.Count; i++)
         {
-            allItems[i].transform.position = allSpawnPoints[i].position;
+            allItemsInBoxes[i].transform.position = allSpawnPoints[i].position;
+            allItemsInBoxes[i].GetComponent<Item>().currentPosition = i;
         }
         //Execute start sequence.
         //Allow player Input
     }
-
     
+    void SelectionMatch()
+    {
+        currentMatches++;
+        if(currentMatches == totalMatchesRequired)
+        {
+            EventManager.instance.GameOver(true);
+        }
+    }
+
+    private void OnEnable()
+    {
+        EventManager.OnPatternMatch += SelectionMatch;
+    }
+
+    private void OnDisable()
+    {
+        EventManager.OnPatternMatch -= SelectionMatch;
+    }
 }
+
+
 /// <summary>
 /// ///https://stackoverflow.com/questions/273313/randomize-a-listt
 /// </summary>
