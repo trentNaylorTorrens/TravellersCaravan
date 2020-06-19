@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System.Threading;
+using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     public int totalMatchesRequired;//Set this first.
     public int currentMatches;
     //Master
@@ -23,14 +26,24 @@ public class GameManager : MonoBehaviour
     public bool playerCanInput = true;
     public Item firstItem;
     public Item secondItem;
-
     public int boxSelection = 0; //Are we selection the first of second box.
-    
-  
+
+    //Could move this out to a scriptable object eventually.
+    public List<Level> allLevels = new List<Level>();
+    public Level currentLevel;
+
+    private float levelTimer;
+    public float LevelTimer { get => levelTimer; }
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(LevelInit());
         //Item Setup;
         SetupItems();
         //Setup Level Boxes
@@ -40,38 +53,58 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerCanInput)
+        //Level state control
+        if (currentLevel != null)
         {
-            if(Input.GetMouseButtonDown(0))
+            switch (currentLevel.currentLevelState)
             {
-                Ray myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                Debug.DrawRay(myRay.origin,myRay.direction * 1000,Color.red, 100);
-                RaycastHit hitinfo;
-                if(Physics.Raycast(myRay,out hitinfo, 1000))
-                {
-                    if(hitinfo.transform.tag == "Box")
+                case Level.LevelState.Pregame:
+                    break;
+                case Level.LevelState.Playing:
+                    levelTimer -= Time.deltaTime;
+                    if (levelTimer <= 0)
+                        currentLevel.currentLevelState = Level.LevelState.GameOver;
+                    break;
+                case Level.LevelState.GameOver:
+                    if (currentMatches == totalMatchesRequired)
                     {
-                        if(boxSelection == 0) //We need to select first box
+                        EventManager.instance.GameOver(true);
+                    }
+                    else EventManager.instance.GameOver(false);
+                    break;
+            }
+            if (playerCanInput)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Ray myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    Debug.DrawRay(myRay.origin, myRay.direction * 1000, Color.red, 100);
+                    RaycastHit hitinfo;
+                    if (Physics.Raycast(myRay, out hitinfo, 1000))
+                    {
+                        if (hitinfo.transform.tag == "Box")
                         {
-                            boxSelection = 1; //First box clicked.
-                            int tempI = FindBoxInSet(hitinfo.transform.parent);
-                            firstItem = allItemsInBoxes[tempI].GetComponent<Item>();
-                            hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
+                            if (boxSelection == 0) //We need to select first box
+                            {
+                                boxSelection = 1; //First box clicked.
+                                int tempI = FindBoxInSet(hitinfo.transform.parent);
+                                firstItem = allItemsInBoxes[tempI].GetComponent<Item>();
+                                hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
+                            }
+                            else if (boxSelection == 1)
+                            {
+                                int tempI = FindBoxInSet(hitinfo.transform.parent);
+                                secondItem = allItemsInBoxes[tempI].GetComponent<Item>();
+                                hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
+                                StartCoroutine(CheckBoxesSequence());
+                            }
+
                         }
-                        else if(boxSelection == 1)
-                        {
-                            int tempI = FindBoxInSet(hitinfo.transform.parent);
-                            secondItem = allItemsInBoxes[tempI].GetComponent<Item>();
-                            hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
-                            StartCoroutine(CheckBoxesSequence());
-                        }
-                                                
                     }
                 }
             }
         }
     }
-
     int FindBoxInSet(Transform obj)
     {
         return allBoxes.IndexOf(obj);
@@ -84,11 +117,11 @@ public class GameManager : MonoBehaviour
         playerCanInput = false;
 
         bool isMatch = false;
-        if(firstItem.itemID == secondItem.itemID)
+        if (firstItem.itemID == secondItem.itemID)
         {
             isMatch = true; //isMatch Event
         }
-        if(isMatch) //Match!
+        if (isMatch) //Match!
         {
             EventManager.instance.PatternMatch();
         }
@@ -106,6 +139,15 @@ public class GameManager : MonoBehaviour
         playerCanInput = true;
     }
 
+    IEnumerator LevelInit()
+    {
+        Level lv = Instantiate(allLevels[0]);
+        currentLevel = lv;
+        currentLevel.currentLevelState = Level.LevelState.Pregame;
+        yield return new WaitForSeconds(2);
+        currentLevel.currentLevelState = Level.LevelState.Playing;
+        levelTimer = currentLevel.levelTimeToCompletetion;
+    }
     void SetupItems()
     {
         //Spawn a set of items to use from a repository of items
@@ -124,7 +166,7 @@ public class GameManager : MonoBehaviour
 
     void SetupBoxes()
     {
-      
+
         allSpawnPosMaster.GetComponentsInChildren<Transform>(false, allSpawnPoints);
         allSpawnPoints.RemoveAt(0);
 
@@ -136,7 +178,7 @@ public class GameManager : MonoBehaviour
         //Insert random spawner of items here.
         int counter = 2;
 
-        foreach(GameObject ip in currentItemsInUse)
+        foreach (GameObject ip in currentItemsInUse)
         {
             for (int i = 0; i < counter; i++)
             {
@@ -155,13 +197,13 @@ public class GameManager : MonoBehaviour
         //Execute start sequence.
         //Allow player Input
     }
-    
+
     void SelectionMatch()
     {
         currentMatches++;
-        if(currentMatches == totalMatchesRequired)
+        if (currentMatches == totalMatchesRequired)
         {
-            EventManager.instance.GameOver(true);
+            currentLevel.currentLevelState = Level.LevelState.GameOver;
         }
     }
 
@@ -174,27 +216,27 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnPatternMatch -= SelectionMatch;
     }
+
+
 }
-
-
-/// <summary>
-/// ///https://stackoverflow.com/questions/273313/randomize-a-listt
-/// </summary>
-static class MyExtension
-{
-    private static System.Random rng = new System.Random();
-
-
-    public static void Shuffle<T>(this IList<T> list)
+    /// <summary>
+    /// ///https://stackoverflow.com/questions/273313/randomize-a-listt
+    /// </summary>
+    static class MyExtension
     {
-        int n = list.Count;
-        while (n > 1)
+        private static System.Random rng = new System.Random();
+
+
+        public static void Shuffle<T>(this IList<T> list)
         {
-            n--;
-            int k = rng.Next(n + 1);
-            T value = list[k];
-            list[k] = list[n];
-            list[n] = value;
+            int n = list.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                T value = list[k];
+                list[k] = list[n];
+                list[n] = value;
+            }
         }
     }
-}
