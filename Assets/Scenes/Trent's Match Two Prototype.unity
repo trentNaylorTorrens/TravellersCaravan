@@ -1556,6 +1556,7 @@ GameObject:
   - component: {fileID: 867010580}
   - component: {fileID: 867010579}
   - component: {fileID: 867010581}
+  - component: {fileID: 867010582}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1605,9 +1606,6 @@ MonoBehaviour:
   allSpawnPoints: []
   allItemsInBoxes: []
   playerCanInput: 1
-  firstItem: {fileID: 0}
-  secondItem: {fileID: 0}
-  boxSelection: 0
   allLevels:
   - {fileID: 11400000, guid: 1a6d3db690517844eae42ddccd6f20bd, type: 2}
   - {fileID: 11400000, guid: 774d7fb969f108743b18985892509583, type: 2}
@@ -1638,6 +1636,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 502a733dd20da3a409bb4c10427404fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &867010582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 867010578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c475f28401f97042a2aa25013791433, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TutorialDifficultyTimer: 20000
+  EasyDifficultyTimer: 500
+  MediumDifficultyTimer: 400
+  HardDifficultyTimer: 500
+  NightMareDifficultyTimer: 200
 --- !u!1 &948081171
 GameObject:
   m_ObjectHideFlags: 0
@@ -2282,7 +2297,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 9.1688e-41}
+  m_BoundingSphereOverride: {x: 0, y: 1.5919e-41, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0

@@ -5,10 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Level", menuName = "ScriptableObjects/NewLevel", order = 1)]
 public class Level : ScriptableObject
 {
-    [Header("Level Settings")]
-    public float levelTimeToCompletetion;
    
     public enum LevelState { Pregame, Playing, GameOver };
+    [Header("Level Settings")]
     public LevelState currentLevelState = LevelState.Pregame;
     
     public enum LevelDifficulty {Tutorial, Easy, Medium, Hard, Nightmare };
