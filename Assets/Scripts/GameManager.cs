@@ -12,9 +12,21 @@ public class GameManager : MonoBehaviour
     public int totalMatchesRequired;//Set this first.
     public int currentMatches;
     //Master
+    /// <summary>
+    /// Parent object that holds the boxes
+    /// </summary>
     public GameObject allBoxesMaster;
+    /// <summary>
+    /// Parent object that holds all the spawn points
+    /// </summary>
     public GameObject allSpawnPosMaster;
+    /// <summary>
+    /// List of all the items available to spawn
+    /// </summary>
     public List<GameObject> completeItemRepo;
+    /// <summary>
+    /// List of the current items spawned in the level
+    /// </summary>
     public List<GameObject> currentItemsInUse;
 
     //Reference
@@ -24,9 +36,9 @@ public class GameManager : MonoBehaviour
 
     //Gameplay
     public bool playerCanInput = true;
-    public Item firstItem;
-    public Item secondItem;
-    public int boxSelection = 0; //Are we selection the first of second box.
+    Item firstItem; //First Item to be Selected for a match
+    Item secondItem; //Second Item to be selectedfor a match
+    int boxSelection = 0; //Are we selecting the first or second box?
 
     //Could move this out to a scriptable object eventually.
     public List<Level> allLevels = new List<Level>();
@@ -38,11 +50,16 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        //Put some error checking in here for Unity assignments.
+        if (allBoxesMaster == null)
+            Debug.LogError("Assign Parent object that holds Boxes"); 
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        //Level initialisation
         StartCoroutine(LevelInit());
         //Item Setup;
         SetupItems();
@@ -66,6 +83,7 @@ public class GameManager : MonoBehaviour
                         currentLevel.currentLevelState = Level.LevelState.GameOver;
                     break;
                 case Level.LevelState.GameOver:
+                    playerCanInput = false;
                     if (currentMatches == totalMatchesRequired)
                     {
                         EventManager.instance.GameOver(true);
@@ -75,6 +93,7 @@ public class GameManager : MonoBehaviour
             }
             if (playerCanInput)
             {
+                //Main raycaster for selecting boxes
                 if (Input.GetMouseButtonDown(0))
                 {
                     Ray myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -105,30 +124,32 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// Helper function - finds a particular box in the list of all boxes
+    /// </summary>
+    /// <param name="obj">Box you are looking for.</param>
+    /// <returns></returns>
     int FindBoxInSet(Transform obj)
     {
         return allBoxes.IndexOf(obj);
     }
-
+    /// <summary>
+    /// Logic for checking a match, generates event based on result.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator CheckBoxesSequence()
     {
-        //Check for Match
-
+        //Prevent player from inputting
         playerCanInput = false;
-
-        bool isMatch = false;
-        if (firstItem.itemID == secondItem.itemID)
-        {
-            isMatch = true; //isMatch Event
-        }
-        if (isMatch) //Match!
+        //Check for Match
+        if (firstItem.itemID == secondItem.itemID) //Match!
         {
             EventManager.instance.PatternMatch();
         }
         else //not a match
         {
             EventManager.instance.PatternMisMatch();
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(1);
             //Animate
             allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
             allBoxes[secondItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
@@ -136,6 +157,7 @@ public class GameManager : MonoBehaviour
         //Reset
         boxSelection = 0;
         yield return new WaitForSeconds(1);
+        //Reset input
         playerCanInput = true;
     }
 
@@ -144,9 +166,28 @@ public class GameManager : MonoBehaviour
         Level lv = Instantiate(allLevels[0]);
         currentLevel = lv;
         currentLevel.currentLevelState = Level.LevelState.Pregame;
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2);//Yield a new coroutine here for doing dialogue etc
         currentLevel.currentLevelState = Level.LevelState.Playing;
-        levelTimer = currentLevel.levelTimeToCompletetion;
+
+        //Set level timer
+        switch (currentLevel.currentLevelDifficulty)
+        {
+            case Level.LevelDifficulty.Tutorial:
+                levelTimer = GlobalSettings.Instance.TutorialDifficultyTimer;
+                break;
+            case Level.LevelDifficulty.Easy:
+                levelTimer = GlobalSettings.Instance.EasyDifficultyTimer;
+                break;
+            case Level.LevelDifficulty.Medium:
+                levelTimer = GlobalSettings.Instance.MediumDifficultyTimer;
+                break;
+            case Level.LevelDifficulty.Hard:
+                levelTimer = GlobalSettings.Instance.HardDifficultyTimer;
+                break;
+            case Level.LevelDifficulty.Nightmare:
+                levelTimer = GlobalSettings.Instance.NightMareDifficultyTimer;
+                break;
+        }
     }
     void SetupItems()
     {
@@ -166,7 +207,7 @@ public class GameManager : MonoBehaviour
 
     void SetupBoxes()
     {
-
+        //Get all the spawn points in the master and store them in the SpawnPoint List
         allSpawnPosMaster.GetComponentsInChildren<Transform>(false, allSpawnPoints);
         allSpawnPoints.RemoveAt(0);
 
@@ -219,24 +260,24 @@ public class GameManager : MonoBehaviour
 
 
 }
-    /// <summary>
-    /// ///https://stackoverflow.com/questions/273313/randomize-a-listt
-    /// </summary>
-    static class MyExtension
+/// <summary>
+/// ///https://stackoverflow.com/questions/273313/randomize-a-listt
+/// </summary>
+static class MyExtension
+{
+    private static System.Random rng = new System.Random();
+
+
+    public static void Shuffle<T>(this IList<T> list)
     {
-        private static System.Random rng = new System.Random();
-
-
-        public static void Shuffle<T>(this IList<T> list)
+        int n = list.Count;
+        while (n > 1)
         {
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = rng.Next(n + 1);
-                T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
         }
     }
+}
