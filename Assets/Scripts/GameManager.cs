@@ -36,8 +36,8 @@ public class GameManager : MonoBehaviour
 
     //Gameplay
     public bool playerCanInput = true;
-    Item firstItem; //First Item to be Selected for a match
-    Item secondItem; //Second Item to be selectedfor a match
+    public Item firstItem; //First Item to be Selected for a match
+    public Item secondItem; //Second Item to be selectedfor a match
     int boxSelection = 0; //Are we selecting the first or second box?
 
     //Could move this out to a scriptable object eventually.
@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
                             if (boxSelection == 0) //We need to select first box
                             {
                                 boxSelection = 1; //First box clicked.
+                                hitinfo.transform.GetComponent<Collider>().enabled = false;//Disable the collider so it cant be clicked again.
                                 int tempI = FindBoxInSet(hitinfo.transform.parent);
                                 firstItem = allItemsInBoxes[tempI].GetComponent<Item>();
                                 hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
@@ -145,6 +146,9 @@ public class GameManager : MonoBehaviour
         if (firstItem.itemID == secondItem.itemID) //Match!
         {
             EventManager.instance.PatternMatch();
+            allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("LockBox");
+            allBoxes[secondItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("LockBox");
+            yield return new WaitForSeconds(1);
         }
         else //not a match
         {
@@ -153,10 +157,15 @@ public class GameManager : MonoBehaviour
             //Animate
             allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
             allBoxes[secondItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
+            //Add delay here for Transition
+            yield return StartCoroutine(IsTransitionDone(allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>(), "Idle"));
+            //Reenable colliders
+            allBoxes[firstItem.currentPosition].transform.GetComponentInChildren<Collider>().enabled = true;//Enable the collider so it can be clicked again.
+            allBoxes[secondItem.currentPosition].transform.GetComponentInChildren<Collider>().enabled = true;//Enable the collider so it can be clicked again.
+
         }
         //Reset
         boxSelection = 0;
-        yield return new WaitForSeconds(1);
         //Reset input
         playerCanInput = true;
     }
@@ -258,6 +267,16 @@ public class GameManager : MonoBehaviour
         EventManager.OnPatternMatch -= SelectionMatch;
     }
 
+    //HelperCoroutine for transition delays.
+    IEnumerator IsTransitionDone(Animator animator, string animation)
+    {
+        while (!animator.GetCurrentAnimatorStateInfo(0).IsName(animation) || animator.IsInTransition(0))
+        {
+            
+            yield return 0;
+        }
+     
+    }
 
 }
 /// <summary>

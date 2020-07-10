@@ -61,6 +61,7 @@ public class UIManager : MonoBehaviour
     void MM_PlayButton()
     {
         UIP_MainMenu.SetActive(false);
+       
     }
     void MM_SettingsButton()
     {
@@ -75,6 +76,7 @@ public class UIManager : MonoBehaviour
     void PM_ResumeButton()
     {
         UIP_PauseMenu.SetActive(false);
+        
     }
 
     void PM_SettingsButton()
@@ -92,5 +94,6 @@ public class UIManager : MonoBehaviour
     void PM_PauseButton()
     {
         UIP_PauseMenu.SetActive(!UIP_PauseMenu.activeSelf);
+        
     }
 }
