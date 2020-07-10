@@ -14,6 +14,17 @@ public class EventManager : MonoBehaviour
 
     public delegate void GameOverAction(bool isWinner);
     public static event GameOverAction OnGameOver;
+
+    //UI EVENTS//
+
+    public delegate void UIButton();
+    public static event UIButton OnPlayButton;
+    public static event UIButton OnPauseButton;
+    public static event UIButton OnSettingsButton;
+    public static event UIButton OnBackToMainMenuButton;
+    public static event UIButton OnResumePlayButton;
+    public static event UIButton OnQuitButton;
+
     private void Awake()
     {
         instance = this;
@@ -40,6 +51,54 @@ public class EventManager : MonoBehaviour
         if(OnGameOver != null)
         {
             OnGameOver(isWin);
+        }
+    }
+
+    //Public UI Events//
+    public void UIPlayButton()
+    { 
+        if(OnPlayButton != null)
+        {
+            OnPlayButton();
+        }
+    }
+
+    public void UIPauseButton()
+    {
+        if (OnPauseButton != null)
+        {
+            OnPauseButton();
+        }
+    }
+
+    public void UISettingsButton()
+    {
+        if (OnSettingsButton != null)
+        {
+            OnSettingsButton();
+        }
+    }
+    public void UIBackToMainMenuButton()
+    {
+        if (OnBackToMainMenuButton != null)
+        {
+            OnBackToMainMenuButton();
+        }
+    }
+
+    public void UIResumePlayButton()
+    {
+        if (OnResumePlayButton != null)
+        {
+            OnResumePlayButton();
+        }
+    }
+
+    public void UIQuitButton()
+    {
+        if (OnQuitButton != null)
+        {
+            OnQuitButton();
         }
     }
 }
