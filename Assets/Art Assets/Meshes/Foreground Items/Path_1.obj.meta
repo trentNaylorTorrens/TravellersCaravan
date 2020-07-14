@@ -3,7 +3,12 @@ guid: f11afe74be3325148a672eb9aee71a25
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Path_1Mat
+    second: {fileID: 2100002, guid: 27d05cd1825374599a2f9ce04c649102, type: 3}
   materials:
     materialImportMode: 1
     materialName: 0
