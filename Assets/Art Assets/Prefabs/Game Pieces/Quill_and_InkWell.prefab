@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5722735568338608675}
-  m_Mesh: {fileID: -2698790360285055765, guid: bfc523fe62db8d1419f4010e85e6a034, type: 3}
+  m_Mesh: {fileID: -2698790360285055765, guid: 02e8e08340cade34a96662eba1d116f9, type: 3}
 --- !u!23 &6293758082669532927
 MeshRenderer:
   m_ObjectHideFlags: 0
