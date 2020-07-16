@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5971751602410466219}
   - component: {fileID: 136063576501671762}
   - component: {fileID: -7654312872686749597}
+  - component: {fileID: -6051776487976781863}
   m_Layer: 0
   m_Name: Potion_Bottle
   m_TagString: Untagged
@@ -95,3 +96,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemID: 5
   currentPosition: 0
+--- !u!95 &-6051776487976781863
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864405680741573518}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0dd415909d962d54bb8ca3cd947a9773, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
