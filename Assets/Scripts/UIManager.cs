@@ -36,7 +36,8 @@ public class UIManager : MonoBehaviour
         EventManager.OnGameOver += WinGameScreen;
         EventManager.OnPlayButton += MM_PlayButton;
         EventManager.OnPauseButton += PM_PauseButton;
-        EventManager.OnBackToMainMenuButton += PM_BackToMainMenuButton;
+        EventManager.SMOnBackToMainMenuButton += SM_BackToMainMenuButton;
+        EventManager.PMOnBackToMainMenuButton += PM_BackToMainMenuButton;
         EventManager.OnSettingsButton += MM_SettingsButton;
         EventManager.OnResumePlayButton += PM_ResumeButton;
         EventManager.OnQuitButton += MM_QuitButton;
@@ -47,7 +48,8 @@ public class UIManager : MonoBehaviour
         EventManager.OnGameOver -= WinGameScreen;
         EventManager.OnPlayButton -= MM_PlayButton;
         EventManager.OnPauseButton -= PM_PauseButton;
-        EventManager.OnBackToMainMenuButton -= PM_BackToMainMenuButton;
+        EventManager.SMOnBackToMainMenuButton -= SM_BackToMainMenuButton;
+        EventManager.PMOnBackToMainMenuButton += PM_BackToMainMenuButton;
         EventManager.OnSettingsButton -= MM_SettingsButton;
         EventManager.OnResumePlayButton -= PM_ResumeButton;
         EventManager.OnQuitButton -= MM_QuitButton;
@@ -90,7 +92,12 @@ public class UIManager : MonoBehaviour
         UIP_PauseMenu.SetActive(false);
         UIP_MainMenu.SetActive(true);
     }
-    
+    void SM_BackToMainMenuButton()
+    {
+        UIP_SettingsMenu.SetActive(false);
+        UIP_PauseMenu.SetActive(false);
+        UIP_MainMenu.SetActive(true);
+    }
     void PM_PauseButton()
     {
         UIP_PauseMenu.SetActive(!UIP_PauseMenu.activeSelf);

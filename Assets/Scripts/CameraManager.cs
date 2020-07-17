@@ -16,7 +16,8 @@ public class CameraManager : MonoBehaviour
     {
         EventManager.OnPlayButton += MainMenuToPlay;
         EventManager.OnSettingsButton += MainMenuToSettings;
-        EventManager.OnBackToMainMenuButton += PauseToMainMenu;
+        EventManager.SMOnBackToMainMenuButton += SettingsToMainMenu;
+        EventManager.PMOnBackToMainMenuButton += PauseToMainMenu;
     }
 
     private void OnDisable()
@@ -37,6 +38,13 @@ public class CameraManager : MonoBehaviour
     }
 
     void PauseToMainMenu()
+    {
+        myAnimator.SetBool("MainMenu", true);
+        myAnimator.SetBool("Game", false);
+        myAnimator.SetBool("Settings", false);
+    }
+
+    void SettingsToMainMenu()
     {
         myAnimator.SetBool("MainMenu", true);
         myAnimator.SetBool("Game", false);

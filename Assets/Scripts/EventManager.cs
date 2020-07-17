@@ -21,7 +21,8 @@ public class EventManager : MonoBehaviour
     public static event UIButton OnPlayButton;
     public static event UIButton OnPauseButton;
     public static event UIButton OnSettingsButton;
-    public static event UIButton OnBackToMainMenuButton;
+    public static event UIButton SMOnBackToMainMenuButton;
+    public static event UIButton PMOnBackToMainMenuButton;
     public static event UIButton OnResumePlayButton;
     public static event UIButton OnQuitButton;
 
@@ -80,9 +81,16 @@ public class EventManager : MonoBehaviour
     }
     public void UIBackToMainMenuButton()
     {
-        if (OnBackToMainMenuButton != null)
+        if (SMOnBackToMainMenuButton != null)
         {
-            OnBackToMainMenuButton();
+            SMOnBackToMainMenuButton();
+        }
+    }
+    public void PMBackToMainMenuButton()
+    {
+        if (PMOnBackToMainMenuButton != null)
+        {
+            PMOnBackToMainMenuButton();
         }
     }
 
