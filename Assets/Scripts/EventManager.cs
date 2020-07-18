@@ -25,6 +25,7 @@ public class EventManager : MonoBehaviour
     public static event UIButton PMOnBackToMainMenuButton;
     public static event UIButton OnResumePlayButton;
     public static event UIButton OnQuitButton;
+    public static event UIButton OnQuitGameButton;
 
     private void Awake()
     {
@@ -102,11 +103,21 @@ public class EventManager : MonoBehaviour
         }
     }
 
+    //Exit the application
     public void UIQuitButton()
     {
         if (OnQuitButton != null)
         {
             OnQuitButton();
+        }
+    }
+
+    //Quit the current game.
+    public void UiQuitGameButton()
+    {
+        if (OnQuitGameButton != null)
+        {
+            OnQuitGameButton();
         }
     }
 }

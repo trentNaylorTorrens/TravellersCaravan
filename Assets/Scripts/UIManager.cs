@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
@@ -41,6 +42,7 @@ public class UIManager : MonoBehaviour
         EventManager.OnSettingsButton += MM_SettingsButton;
         EventManager.OnResumePlayButton += PM_ResumeButton;
         EventManager.OnQuitButton += MM_QuitButton;
+        EventManager.OnQuitGameButton += PM_QuitButton;
     }
 
     private void OnDisable()
@@ -49,10 +51,11 @@ public class UIManager : MonoBehaviour
         EventManager.OnPlayButton -= MM_PlayButton;
         EventManager.OnPauseButton -= PM_PauseButton;
         EventManager.SMOnBackToMainMenuButton -= SM_BackToMainMenuButton;
-        EventManager.PMOnBackToMainMenuButton += PM_BackToMainMenuButton;
+        EventManager.PMOnBackToMainMenuButton -= PM_BackToMainMenuButton;
         EventManager.OnSettingsButton -= MM_SettingsButton;
         EventManager.OnResumePlayButton -= PM_ResumeButton;
         EventManager.OnQuitButton -= MM_QuitButton;
+        EventManager.OnQuitGameButton -= PM_QuitButton;
     }
     void WinGameScreen(bool isWinner)
     {
@@ -63,7 +66,7 @@ public class UIManager : MonoBehaviour
     void MM_PlayButton()
     {
         UIP_MainMenu.SetActive(false);
-       
+        GameManager.instance.playerCanInput = true;
     }
     void MM_SettingsButton()
     {
@@ -78,12 +81,16 @@ public class UIManager : MonoBehaviour
     void PM_ResumeButton()
     {
         UIP_PauseMenu.SetActive(false);
-        
+        GameManager.instance.playerCanInput = true;
     }
 
     void PM_SettingsButton()
     {
-
+        GameManager.instance.playerCanInput = false;
+    }
+    void PM_QuitButton()
+    {
+       
     }
 
     void PM_BackToMainMenuButton()
@@ -91,6 +98,7 @@ public class UIManager : MonoBehaviour
         UIP_SettingsMenu.SetActive(false);
         UIP_PauseMenu.SetActive(false);
         UIP_MainMenu.SetActive(true);
+        GameManager.instance.playerCanInput = false;
     }
     void SM_BackToMainMenuButton()
     {
@@ -100,7 +108,8 @@ public class UIManager : MonoBehaviour
     }
     void PM_PauseButton()
     {
+        GameManager.instance.playerCanInput = UIP_PauseMenu.activeSelf;
         UIP_PauseMenu.SetActive(!UIP_PauseMenu.activeSelf);
-        
+        GameManager.instance.PauseGame();
     }
 }

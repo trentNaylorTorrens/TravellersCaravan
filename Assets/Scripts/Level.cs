@@ -6,7 +6,7 @@ using UnityEngine;
 public class Level : ScriptableObject
 {
    
-    public enum LevelState { Pregame, Playing, GameOver };
+    public enum LevelState { Pregame, Playing, Paused, GameOver };
     [Header("Level Settings")]
     public LevelState currentLevelState = LevelState.Pregame;
     

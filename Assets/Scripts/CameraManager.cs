@@ -22,7 +22,10 @@ public class CameraManager : MonoBehaviour
 
     private void OnDisable()
     {
-        
+        EventManager.OnPlayButton -= MainMenuToPlay;
+        EventManager.OnSettingsButton -= MainMenuToSettings;
+        EventManager.SMOnBackToMainMenuButton -= SettingsToMainMenu;
+        EventManager.PMOnBackToMainMenuButton -= PauseToMainMenu;
     }
 
     void MainMenuToPlay()

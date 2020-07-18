@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Threading;
 using UnityEditor;
@@ -90,6 +91,8 @@ public class GameManager : MonoBehaviour
                     }
                     else EventManager.instance.GameOver(false);
                     break;
+                case Level.LevelState.Paused:
+                    break;
             }
             if (playerCanInput)
             {
@@ -175,9 +178,7 @@ public class GameManager : MonoBehaviour
         Level lv = Instantiate(allLevels[0]);
         currentLevel = lv;
         currentLevel.currentLevelState = Level.LevelState.Pregame;
-        yield return new WaitForSeconds(2);//Yield a new coroutine here for doing dialogue etc
-        currentLevel.currentLevelState = Level.LevelState.Playing;
-
+        yield return null;
         //Set level timer
         switch (currentLevel.currentLevelDifficulty)
         {
@@ -257,14 +258,52 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StartGame()
+    {
+        if (currentLevel.currentLevelState == Level.LevelState.Paused)
+        {
+            StartCoroutine(ChangeGameStates(1f, Level.LevelState.Playing));
+        }
+        else
+        {
+            //Start from MainMenu
+            StartCoroutine(ChangeGameStates(3f, Level.LevelState.Playing));
+        }
+    }    
+
+    public void PauseGame()
+    {
+        if(currentLevel.currentLevelState == Level.LevelState.Paused)
+        {
+            StartCoroutine(ChangeGameStates(1f, Level.LevelState.Playing));
+        }
+        else StartCoroutine(ChangeGameStates(1f, Level.LevelState.Paused));
+    }
+
+    public IEnumerator ChangeGameStates(float delay, Level.LevelState nState)
+    {
+        yield return new WaitForSeconds(delay);
+        currentLevel.currentLevelState = nState;
+    }
+    public void QuitGame ()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+       //Just restart the level.
+    }
     private void OnEnable()
     {
         EventManager.OnPatternMatch += SelectionMatch;
+        EventManager.OnPlayButton += StartGame;
+        EventManager.OnResumePlayButton += StartGame;
+        EventManager.OnPauseButton += PauseGame;
     }
 
     private void OnDisable()
     {
         EventManager.OnPatternMatch -= SelectionMatch;
+        EventManager.OnPlayButton -= StartGame;
+        EventManager.OnResumePlayButton -= StartGame;
+        EventManager.OnPauseButton -= PauseGame;
     }
 
     //HelperCoroutine for transition delays.
