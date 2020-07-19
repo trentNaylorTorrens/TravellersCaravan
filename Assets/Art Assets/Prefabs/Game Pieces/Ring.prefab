@@ -60,7 +60,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: d3b45d69e96f88f43b4a26c5cf7cbb75, type: 3}
+  - {fileID: 5561349426305759274, guid: 02ee4a50d3f070140b8c7dfcd0b531aa, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecc0164072b0e464e95133c14d3a5c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemID: 0
+  itemID: 3
   currentPosition: 0
 --- !u!95 &6627759716916649030
 Animator:
