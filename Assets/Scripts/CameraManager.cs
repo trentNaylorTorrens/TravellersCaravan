@@ -10,6 +10,7 @@ public class CameraManager : MonoBehaviour
     void Start()
     {
         myAnimator = GetComponent<Animator>();    
+        
     }
 
     private void OnEnable()
@@ -18,6 +19,7 @@ public class CameraManager : MonoBehaviour
         EventManager.OnSettingsButton += MainMenuToSettings;
         EventManager.SMOnBackToMainMenuButton += SettingsToMainMenu;
         EventManager.PMOnBackToMainMenuButton += PauseToMainMenu;
+        EventManager.OnRestartLevel += SnapToGame;
     }
 
     private void OnDisable()
@@ -26,6 +28,12 @@ public class CameraManager : MonoBehaviour
         EventManager.OnSettingsButton -= MainMenuToSettings;
         EventManager.SMOnBackToMainMenuButton -= SettingsToMainMenu;
         EventManager.PMOnBackToMainMenuButton -= PauseToMainMenu;
+        EventManager.OnRestartLevel -= SnapToGame;
+    }
+
+    void SnapToGame()
+    {
+        myAnimator.SetTrigger("SnapToGame");
     }
 
     void MainMenuToPlay()

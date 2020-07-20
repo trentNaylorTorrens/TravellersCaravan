@@ -41,11 +41,16 @@ public class GameManager : MonoBehaviour
     public Item secondItem; //Second Item to be selectedfor a match
     int boxSelection = 0; //Are we selecting the first or second box?
 
-    //Could move this out to a scriptable object eventually.
-    public List<Level> allLevels = new List<Level>();
-    public Level currentLevel;
+    //Level settings
 
-    private float levelTimer;
+    public enum LevelState { Pregame, Playing, Paused, GameOver };
+    [Header("Level Settings")]
+    public LevelState currentLevelState = LevelState.Pregame;
+
+    public enum LevelDifficulty { Tutorial, Easy, Medium, Hard, Nightmare };
+    public LevelDifficulty currentLevelDifficulty = LevelDifficulty.Easy;
+
+    public float levelTimer;
     public float LevelTimer { get => levelTimer; }
 
     private void Awake()
@@ -66,67 +71,74 @@ public class GameManager : MonoBehaviour
         SetupItems();
         //Setup Level Boxes
         SetupBoxes();
+
+        //If the player pressed replay game, call thhe event and reset the global.
+        if(GlobalSettings.gameIsReplay)
+        {
+            EventManager.instance.RestartedLevel();
+            GlobalSettings.gameIsReplay = false;
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
         //Level state control
-        if (currentLevel != null)
+        
+        switch (currentLevelState)
         {
-            switch (currentLevel.currentLevelState)
-            {
-                case Level.LevelState.Pregame:
-                    break;
-                case Level.LevelState.Playing:
-                    levelTimer -= Time.deltaTime;
-                    if (levelTimer <= 0)
-                        currentLevel.currentLevelState = Level.LevelState.GameOver;
-                    break;
-                case Level.LevelState.GameOver:
-                    playerCanInput = false;
-                    if (currentMatches == totalMatchesRequired)
-                    {
-                        EventManager.instance.GameOver(true);
-                    }
-                    else EventManager.instance.GameOver(false);
-                    break;
-                case Level.LevelState.Paused:
-                    break;
-            }
-            if (playerCanInput)
-            {
-                //Main raycaster for selecting boxes
-                if (Input.GetMouseButtonDown(0))
+            case LevelState.Pregame:
+                break;
+            case LevelState.Playing:
+                levelTimer -= Time.deltaTime;
+                if (levelTimer <= 0)
+                    currentLevelState = LevelState.GameOver;
+                break;
+            case LevelState.GameOver:
+                playerCanInput = false;
+                if (currentMatches == totalMatchesRequired)
                 {
-                    Ray myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Debug.DrawRay(myRay.origin, myRay.direction * 1000, Color.red, 100);
-                    RaycastHit hitinfo;
-                    if (Physics.Raycast(myRay, out hitinfo, 1000))
+                    EventManager.instance.GameOver(true);
+                }
+                else EventManager.instance.GameOver(false);
+                break;
+            case LevelState.Paused:
+                break;
+        }
+        if (playerCanInput)
+        {
+            //Main raycaster for selecting boxes
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray myRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Debug.DrawRay(myRay.origin, myRay.direction * 1000, Color.red, 100);
+                RaycastHit hitinfo;
+                if (Physics.Raycast(myRay, out hitinfo, 1000))
+                {
+                    if (hitinfo.transform.tag == "Box")
                     {
-                        if (hitinfo.transform.tag == "Box")
+                        if (boxSelection == 0) //We need to select first box
                         {
-                            if (boxSelection == 0) //We need to select first box
-                            {
-                                boxSelection = 1; //First box clicked.
-                                hitinfo.transform.GetComponent<Collider>().enabled = false;//Disable the collider so it cant be clicked again.
-                                int tempI = FindBoxInSet(hitinfo.transform.parent);
-                                firstItem = allItemsInBoxes[tempI].GetComponent<Item>();
-                                hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
-                            }
-                            else if (boxSelection == 1)
-                            {
-                                int tempI = FindBoxInSet(hitinfo.transform.parent);
-                                secondItem = allItemsInBoxes[tempI].GetComponent<Item>();
-                                hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
-                                StartCoroutine(CheckBoxesSequence());
-                            }
-
+                            boxSelection = 1; //First box clicked.
+                            hitinfo.transform.GetComponent<Collider>().enabled = false;//Disable the collider so it cant be clicked again.
+                            int tempI = FindBoxInSet(hitinfo.transform.parent);
+                            firstItem = allItemsInBoxes[tempI].GetComponent<Item>();
+                            hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
                         }
+                        else if (boxSelection == 1)
+                        {
+                            int tempI = FindBoxInSet(hitinfo.transform.parent);
+                            secondItem = allItemsInBoxes[tempI].GetComponent<Item>();
+                            hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
+                            StartCoroutine(CheckBoxesSequence());
+                        }
+
                     }
                 }
             }
         }
+        
     }
     /// <summary>
     /// Helper function - finds a particular box in the list of all boxes
@@ -175,26 +187,25 @@ public class GameManager : MonoBehaviour
 
     IEnumerator LevelInit()
     {
-        Level lv = Instantiate(allLevels[0]);
-        currentLevel = lv;
-        currentLevel.currentLevelState = Level.LevelState.Pregame;
+        
+        currentLevelState = LevelState.Pregame;
         yield return null;
         //Set level timer
-        switch (currentLevel.currentLevelDifficulty)
+        switch (currentLevelDifficulty)
         {
-            case Level.LevelDifficulty.Tutorial:
+            case LevelDifficulty.Tutorial:
                 levelTimer = GlobalSettings.Instance.TutorialDifficultyTimer;
                 break;
-            case Level.LevelDifficulty.Easy:
+            case LevelDifficulty.Easy:
                 levelTimer = GlobalSettings.Instance.EasyDifficultyTimer;
                 break;
-            case Level.LevelDifficulty.Medium:
+            case LevelDifficulty.Medium:
                 levelTimer = GlobalSettings.Instance.MediumDifficultyTimer;
                 break;
-            case Level.LevelDifficulty.Hard:
+            case LevelDifficulty.Hard:
                 levelTimer = GlobalSettings.Instance.HardDifficultyTimer;
                 break;
-            case Level.LevelDifficulty.Nightmare:
+            case LevelDifficulty.Nightmare:
                 levelTimer = GlobalSettings.Instance.NightMareDifficultyTimer;
                 break;
         }
@@ -254,36 +265,36 @@ public class GameManager : MonoBehaviour
         currentMatches++;
         if (currentMatches == totalMatchesRequired)
         {
-            currentLevel.currentLevelState = Level.LevelState.GameOver;
+            currentLevelState = LevelState.GameOver;
         }
     }
 
     public void StartGame()
     {
-        if (currentLevel.currentLevelState == Level.LevelState.Paused)
+        if (currentLevelState == LevelState.Paused)
         {
-            StartCoroutine(ChangeGameStates(1f, Level.LevelState.Playing));
+            StartCoroutine(ChangeGameStates(1f, LevelState.Playing));
         }
         else
         {
             //Start from MainMenu
-            StartCoroutine(ChangeGameStates(3f, Level.LevelState.Playing));
+            StartCoroutine(ChangeGameStates(3f, LevelState.Playing));
         }
     }    
 
     public void PauseGame()
     {
-        if(currentLevel.currentLevelState == Level.LevelState.Paused)
+        if(currentLevelState == LevelState.Paused)
         {
-            StartCoroutine(ChangeGameStates(1f, Level.LevelState.Playing));
+            StartCoroutine(ChangeGameStates(1f, LevelState.Playing));
         }
-        else StartCoroutine(ChangeGameStates(1f, Level.LevelState.Paused));
+        else StartCoroutine(ChangeGameStates(1f, LevelState.Paused));
     }
 
-    public IEnumerator ChangeGameStates(float delay, Level.LevelState nState)
+    public IEnumerator ChangeGameStates(float delay, LevelState nState)
     {
         yield return new WaitForSeconds(delay);
-        currentLevel.currentLevelState = nState;
+        currentLevelState = nState;
     }
     public void QuitGame ()
     {
@@ -295,6 +306,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnPatternMatch += SelectionMatch;
         EventManager.OnPlayButton += StartGame;
         EventManager.OnResumePlayButton += StartGame;
+        EventManager.OnRestartLevel += StartGame;
         EventManager.OnPauseButton += PauseGame;
     }
 
@@ -303,6 +315,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnPatternMatch -= SelectionMatch;
         EventManager.OnPlayButton -= StartGame;
         EventManager.OnResumePlayButton -= StartGame;
+        EventManager.OnRestartLevel -= StartGame;
         EventManager.OnPauseButton -= PauseGame;
     }
 

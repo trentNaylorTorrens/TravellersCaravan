@@ -23,12 +23,16 @@ public class AnimationManager : MonoBehaviour
     {
         EventManager.OnPlayButton += SidePanelOpen;
         EventManager.PMOnBackToMainMenuButton += SidePanelClose;
+        EventManager.OnReplayButton += SidePanelClose;
+        EventManager.OnRestartLevel += SidePanelOpen;
     }
 
     private void OnDisable()
     {
         EventManager.OnPlayButton -= SidePanelOpen;
         EventManager.PMOnBackToMainMenuButton -= SidePanelClose;
+        EventManager.OnReplayButton -= SidePanelClose;
+        EventManager.OnRestartLevel -= SidePanelOpen;
     }
 
     void SidePanelOpen()

@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     public GameObject UIP_MainMenu;
     public GameObject UIP_PauseMenu;
     public GameObject UIP_SettingsMenu;
+    public GameObject UIP_EndGameMenu;
 
     public Text testWinText;
     public TMP_Text uiRemainingTime;
@@ -35,56 +36,62 @@ public class UIManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnGameOver += WinGameScreen;
-        EventManager.OnPlayButton += MM_PlayButton;
-        EventManager.OnPauseButton += PM_PauseButton;
-        EventManager.SMOnBackToMainMenuButton += SM_BackToMainMenuButton;
-        EventManager.PMOnBackToMainMenuButton += PM_BackToMainMenuButton;
-        EventManager.OnSettingsButton += MM_SettingsButton;
-        EventManager.OnResumePlayButton += PM_ResumeButton;
-        EventManager.OnQuitButton += MM_QuitButton;
+        EventManager.OnPlayButton += MM_PlayButtonPressed;
+        EventManager.OnPauseButton += PM_PauseButtonPressed;
+        EventManager.SMOnBackToMainMenuButton += SM_BackToMainMenuButtonPressed;
+        EventManager.PMOnBackToMainMenuButton += PM_BackToMainMenuButtonPressed;
+        EventManager.OnSettingsButton += MM_SettingsButtonPressed;
+        EventManager.OnResumePlayButton += PM_ResumeButtonPressed;
+        EventManager.OnQuitButton += MM_QuitButtonPressed;
         EventManager.OnQuitGameButton += PM_QuitButton;
+        EventManager.OnRestartLevel += MM_PlayButtonPressed;
+        EventManager.OnReplayButton += EG_ReplayButtonPressed;
     }
 
     private void OnDisable()
     {
         EventManager.OnGameOver -= WinGameScreen;
-        EventManager.OnPlayButton -= MM_PlayButton;
-        EventManager.OnPauseButton -= PM_PauseButton;
-        EventManager.SMOnBackToMainMenuButton -= SM_BackToMainMenuButton;
-        EventManager.PMOnBackToMainMenuButton -= PM_BackToMainMenuButton;
-        EventManager.OnSettingsButton -= MM_SettingsButton;
-        EventManager.OnResumePlayButton -= PM_ResumeButton;
-        EventManager.OnQuitButton -= MM_QuitButton;
+        EventManager.OnPlayButton -= MM_PlayButtonPressed;
+        EventManager.OnPauseButton -= PM_PauseButtonPressed;
+        EventManager.SMOnBackToMainMenuButton -= SM_BackToMainMenuButtonPressed;
+        EventManager.PMOnBackToMainMenuButton -= PM_BackToMainMenuButtonPressed;
+        EventManager.OnSettingsButton -= MM_SettingsButtonPressed;
+        EventManager.OnResumePlayButton -= PM_ResumeButtonPressed;
+        EventManager.OnQuitButton -= MM_QuitButtonPressed;
         EventManager.OnQuitGameButton -= PM_QuitButton;
+        EventManager.OnRestartLevel -= MM_PlayButtonPressed;
+        EventManager.OnReplayButton -= EG_ReplayButtonPressed;
     }
     void WinGameScreen(bool isWinner)
     {
+        UIP_EndGameMenu.SetActive(true);
+        UIP_SettingsMenu.SetActive(false);
+        GameManager.instance.playerCanInput = false;
         testWinText.text = "You are winner = " + isWinner.ToString();
-        testWinText.gameObject.SetActive(true);
     }
     
-    void MM_PlayButton()
+    void MM_PlayButtonPressed()
     {
         UIP_MainMenu.SetActive(false);
         GameManager.instance.playerCanInput = true;
     }
-    void MM_SettingsButton()
+    void MM_SettingsButtonPressed()
     {
         UIP_SettingsMenu.SetActive(true);
         UIP_MainMenu.SetActive(false);
     }
-    void MM_QuitButton()
+    void MM_QuitButtonPressed()
     {
         Application.Quit();
     }
 
-    void PM_ResumeButton()
+    void PM_ResumeButtonPressed()
     {
         UIP_PauseMenu.SetActive(false);
         GameManager.instance.playerCanInput = true;
     }
 
-    void PM_SettingsButton()
+    void PM_SettingsButtonPressed()
     {
         GameManager.instance.playerCanInput = false;
     }
@@ -93,23 +100,32 @@ public class UIManager : MonoBehaviour
        
     }
 
-    void PM_BackToMainMenuButton()
+    void PM_BackToMainMenuButtonPressed()
     {
         UIP_SettingsMenu.SetActive(false);
         UIP_PauseMenu.SetActive(false);
         UIP_MainMenu.SetActive(true);
         GameManager.instance.playerCanInput = false;
     }
-    void SM_BackToMainMenuButton()
+    void SM_BackToMainMenuButtonPressed()
     {
         UIP_SettingsMenu.SetActive(false);
         UIP_PauseMenu.SetActive(false);
         UIP_MainMenu.SetActive(true);
     }
-    void PM_PauseButton()
+    void PM_PauseButtonPressed()
     {
         GameManager.instance.playerCanInput = UIP_PauseMenu.activeSelf;
         UIP_PauseMenu.SetActive(!UIP_PauseMenu.activeSelf);
         GameManager.instance.PauseGame();
     }
+
+    void EG_ReplayButtonPressed()
+    {
+        GlobalSettings.gameIsReplay = true;
+        UIP_EndGameMenu.SetActive(false);
+        GameManager.instance.QuitGame();
+    }
+   
+   
 }
