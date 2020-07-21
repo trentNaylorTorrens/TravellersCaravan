@@ -14,6 +14,10 @@ public class GlobalSettings : MonoBehaviour
     public float NightMareDifficultyTimer = 200f;
 
     public static bool gameIsReplay = false;
+
+    //Save references
+    public const string LEVELDIFFICULTY = "LevelDifficulty";
+
     public void Awake()
     {
         if(Instance != null)
@@ -25,6 +29,7 @@ public class GlobalSettings : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
-           
     }
+
+   
 }

@@ -4,9 +4,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
+
     [Header("UI Panels")]
     public GameObject UIP_MainMenu;
     public GameObject UIP_PauseMenu;
@@ -15,11 +18,23 @@ public class UIManager : MonoBehaviour
 
     public Text testWinText;
     public TMP_Text uiRemainingTime;
-    
+
+    [Header("Settings")]
+    public UnityEngine.UI.Slider difficultySlider;
+    public TMP_Text difficultyText;
+    public UnityEngine.UI.Slider musicSlider;
+    public TMP_Text musicVolText;
+    public UnityEngine.UI.Slider soundSlider;
+    public TMP_Text soundVolText;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        if(Instance != null)
+        {
+            Destroy(this);
+        }
+        else Instance = this;
     }
 
     // Update is called once per frame
@@ -46,6 +61,7 @@ public class UIManager : MonoBehaviour
         EventManager.OnQuitGameButton += PM_QuitButton;
         EventManager.OnRestartLevel += MM_PlayButtonPressed;
         EventManager.OnReplayButton += EG_ReplayButtonPressed;
+        
     }
 
     private void OnDisable()
@@ -61,6 +77,7 @@ public class UIManager : MonoBehaviour
         EventManager.OnQuitGameButton -= PM_QuitButton;
         EventManager.OnRestartLevel -= MM_PlayButtonPressed;
         EventManager.OnReplayButton -= EG_ReplayButtonPressed;
+        
     }
     void WinGameScreen(bool isWinner)
     {
@@ -127,5 +144,24 @@ public class UIManager : MonoBehaviour
         GameManager.instance.QuitGame();
     }
    
+    //Settings Menu
+    public void OnDifficultyChange()
+    {
+        int diff = (int)UIManager.Instance.difficultySlider.value;
+        GameManager.LevelDifficulty newLevelDifficulty = (GameManager.LevelDifficulty)diff;
+        EventManager.instance.SettingsChangeDifficulty(newLevelDifficulty);
+        difficultyText.text = GameManager.instance.currentLevelDifficulty.ToString();
+        GameManager.instance.SaveSettings(); //Turn into EVENT.
+    }
+
+    public void OnMusicVolumeChange()
+    {
+        musicVolText.text = musicSlider.value.ToString();
+    }
+
+    public void OnSoundVolumeChange()
+    {
+        soundVolText.text = soundSlider.value.ToString();
+    }
    
 }

@@ -18,6 +18,9 @@ public class EventManager : MonoBehaviour
     public delegate void GameRestartAction();
     public static event GameRestartAction OnRestartLevel;
 
+    public delegate void DifficultySettingChange(GameManager.LevelDifficulty nDiff);
+    public static event DifficultySettingChange OnDifficultyChange;
+
     //UI EVENTS//
 
     public delegate void UIButton();
@@ -138,6 +141,14 @@ public class EventManager : MonoBehaviour
         if (OnQuitGameButton != null)
         {
             OnQuitGameButton();
+        }
+    }
+
+    public void SettingsChangeDifficulty(GameManager.LevelDifficulty nDiff)
+    {
+        if(OnDifficultyChange != null)
+        {
+            OnDifficultyChange(nDiff);
         }
     }
 }

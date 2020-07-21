@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        LoadSettings();
         //Level initialisation
         StartCoroutine(LevelInit());
         //Item Setup;
@@ -191,6 +192,15 @@ public class GameManager : MonoBehaviour
         currentLevelState = LevelState.Pregame;
         yield return null;
         //Set level timer
+        int diff = (int)UIManager.Instance.difficultySlider.value;
+        LevelDifficulty newLevelDifficulty = (LevelDifficulty)diff;
+        LevelDifficultyUpdate(newLevelDifficulty);
+    }
+
+    void LevelDifficultyUpdate(LevelDifficulty nDiff)
+    {
+        currentLevelDifficulty = nDiff;
+
         switch (currentLevelDifficulty)
         {
             case LevelDifficulty.Tutorial:
@@ -210,6 +220,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+
     void SetupItems()
     {
         //Spawn a set of items to use from a repository of items
@@ -301,6 +312,19 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
        //Just restart the level.
     }
+
+    public void SaveSettings()
+    {
+        PlayerPrefs.SetInt(GlobalSettings.LEVELDIFFICULTY, (int)currentLevelDifficulty);
+    }
+
+    public void LoadSettings()
+    {
+        int diff = PlayerPrefs.GetInt(GlobalSettings.LEVELDIFFICULTY);
+        UIManager.Instance.difficultySlider.value = diff;
+        UIManager.Instance.OnDifficultyChange();
+      
+    }
     private void OnEnable()
     {
         EventManager.OnPatternMatch += SelectionMatch;
@@ -308,6 +332,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnResumePlayButton += StartGame;
         EventManager.OnRestartLevel += StartGame;
         EventManager.OnPauseButton += PauseGame;
+        EventManager.OnDifficultyChange += LevelDifficultyUpdate;
     }
 
     private void OnDisable()
@@ -317,6 +342,7 @@ public class GameManager : MonoBehaviour
         EventManager.OnResumePlayButton -= StartGame;
         EventManager.OnRestartLevel -= StartGame;
         EventManager.OnPauseButton -= PauseGame;
+        EventManager.OnDifficultyChange -= LevelDifficultyUpdate;
     }
 
     //HelperCoroutine for transition delays.
