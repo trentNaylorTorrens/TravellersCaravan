@@ -151,17 +151,24 @@ public class UIManager : MonoBehaviour
         GameManager.LevelDifficulty newLevelDifficulty = (GameManager.LevelDifficulty)diff;
         EventManager.instance.SettingsChangeDifficulty(newLevelDifficulty);
         difficultyText.text = GameManager.instance.currentLevelDifficulty.ToString();
-        GameManager.instance.SaveSettings(); //Turn into EVENT.
+       
     }
 
     public void OnMusicVolumeChange()
     {
         musicVolText.text = musicSlider.value.ToString();
+        //convert slider to volume dB
+        float db = (-80 + ((musicSlider.value / 100) * 80));
+        AudioManager.Instance.audioMixer.SetFloat("MusicVolume", db);
+
     }
 
     public void OnSoundVolumeChange()
     {
         soundVolText.text = soundSlider.value.ToString();
+        //convert slider to volume dB
+        float db = (-80 + ((soundSlider.value / 100) * 80));
+        AudioManager.Instance.audioMixer.SetFloat("EffectsVolume", db);
     }
    
 }

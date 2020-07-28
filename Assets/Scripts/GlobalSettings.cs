@@ -17,6 +17,8 @@ public class GlobalSettings : MonoBehaviour
 
     //Save references
     public const string LEVELDIFFICULTY = "LevelDifficulty";
+    public const string MUSICVOLUME = "MusicVolume";
+    public const string EFFECTSVOLUME = "EffectsVolume";
 
     public void Awake()
     {

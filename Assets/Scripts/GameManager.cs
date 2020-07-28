@@ -245,7 +245,7 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < allBoxes.Count; i++)
         {
-            allSpawnPoints[i].position = allBoxes[i].position;
+            allSpawnPoints[i].position = allBoxes[i].position + new Vector3(0,0.02f,0);
         }
 
         //Insert random spawner of items here.
@@ -316,6 +316,9 @@ public class GameManager : MonoBehaviour
     public void SaveSettings()
     {
         PlayerPrefs.SetInt(GlobalSettings.LEVELDIFFICULTY, (int)currentLevelDifficulty);
+        PlayerPrefs.SetFloat(GlobalSettings.MUSICVOLUME, UIManager.Instance.musicSlider.value);
+        PlayerPrefs.SetFloat(GlobalSettings.EFFECTSVOLUME, UIManager.Instance.soundSlider.value);
+
     }
 
     public void LoadSettings()
@@ -323,7 +326,9 @@ public class GameManager : MonoBehaviour
         int diff = PlayerPrefs.GetInt(GlobalSettings.LEVELDIFFICULTY);
         UIManager.Instance.difficultySlider.value = diff;
         UIManager.Instance.OnDifficultyChange();
-      
+
+        UIManager.Instance.musicSlider.value = PlayerPrefs.GetFloat(GlobalSettings.MUSICVOLUME );
+        UIManager.Instance.soundSlider.value = PlayerPrefs.GetFloat(GlobalSettings.EFFECTSVOLUME);
     }
     private void OnEnable()
     {
