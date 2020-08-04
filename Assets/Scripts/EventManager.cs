@@ -6,6 +6,10 @@ public class EventManager : MonoBehaviour
 {
     public static EventManager instance;
 
+    public delegate void BoxInteract();
+    public static event BoxInteract OnBoxOpen;
+    public static event BoxInteract OnBoxClose;
+
     public delegate void PatternMatchAction();
     public static event PatternMatchAction OnPatternMatch;
 
@@ -41,6 +45,21 @@ public class EventManager : MonoBehaviour
         instance = this;
     }
    
+    public void BoxOpen()
+    {
+        if(OnBoxOpen != null)
+        {
+            OnBoxOpen();
+        }
+    }
+
+    public void BoxClose()
+    {
+        if (OnBoxOpen != null)
+        {
+            OnBoxOpen();
+        }
+    }
     public void PatternMatch()
     {
         if(OnPatternMatch != null)

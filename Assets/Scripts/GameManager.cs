@@ -126,12 +126,14 @@ public class GameManager : MonoBehaviour
                             int tempI = FindBoxInSet(hitinfo.transform.parent);
                             firstItem = allItemsInBoxes[tempI].GetComponent<Item>();
                             hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
+                            hitinfo.transform.GetComponentInChildren<Box>().RevealBox();
                         }
                         else if (boxSelection == 1)
                         {
                             int tempI = FindBoxInSet(hitinfo.transform.parent);
                             secondItem = allItemsInBoxes[tempI].GetComponent<Item>();
                             hitinfo.transform.parent.GetComponent<Animator>().SetTrigger("UncoverBox");
+                            hitinfo.transform.GetComponentInChildren<Box>().RevealBox();
                             StartCoroutine(CheckBoxesSequence());
                         }
 
@@ -173,6 +175,9 @@ public class GameManager : MonoBehaviour
             //Animate
             allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
             allBoxes[secondItem.currentPosition].GetComponentInChildren<Animator>().SetTrigger("CoverBox");
+            allBoxes[firstItem.currentPosition].transform.GetComponentInChildren<Box>().CloseBox();
+            allBoxes[secondItem.currentPosition].transform.GetComponentInChildren<Box>().CloseBox();
+
             //Add delay here for Transition
             yield return StartCoroutine(IsTransitionDone(allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>(), "Idle"));
             //Reenable colliders

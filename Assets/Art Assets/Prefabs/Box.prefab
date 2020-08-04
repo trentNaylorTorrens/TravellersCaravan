@@ -63,6 +63,7 @@ GameObject:
   - component: {fileID: 4737045612114988845}
   - component: {fileID: 4737045612114988818}
   - component: {fileID: 4737045612114988819}
+  - component: {fileID: 4868260949562571404}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Box
@@ -100,7 +101,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4737045612114988816}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -144,3 +145,15 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4868260949562571404
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4737045612114988816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3294489ca175ee4f8710c8bb77528a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
