@@ -57,8 +57,11 @@ public class CameraManager : MonoBehaviour
 
     void SettingsToMainMenu()
     {
-        myAnimator.SetBool("MainMenu", true);
-        myAnimator.SetBool("Game", false);
-        myAnimator.SetBool("Settings", false);
+        if (GameManager.instance.currentLevelState == GameManager.LevelState.Pregame)
+        {
+            myAnimator.SetBool("MainMenu", true);
+            myAnimator.SetBool("Game", false);
+            myAnimator.SetBool("Settings", false);
+        }
     }
 }

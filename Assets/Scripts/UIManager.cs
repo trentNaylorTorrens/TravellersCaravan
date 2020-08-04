@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     public TMP_Text musicVolText;
     public UnityEngine.UI.Slider soundSlider;
     public TMP_Text soundVolText;
+    
 
     // Start is called before the first frame update
     void Awake()
@@ -41,11 +42,14 @@ public class UIManager : MonoBehaviour
     void Update()
     {
         uiRemainingTime.text = "Time remaining: " + GameManager.instance.LevelTimer.ToString();
-
-        if(Input.GetKeyDown(KeyCode.Escape) && !UIP_MainMenu.activeSelf)
+        if(GameManager.instance.currentLevelState == GameManager.LevelState.Playing || GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
         {
-            EventManager.instance.UIPauseButton();
+            if (Input.GetKeyDown(KeyCode.Escape) && !UIP_MainMenu.activeSelf)
+            {
+                EventManager.instance.UIPauseButton();
+            }
         }
+        
     }
 
     private void OnEnable()
@@ -94,8 +98,16 @@ public class UIManager : MonoBehaviour
     }
     void MM_SettingsButtonPressed()
     {
-        UIP_SettingsMenu.SetActive(true);
-        UIP_MainMenu.SetActive(false);
+        if (GameManager.instance.currentLevelState == GameManager.LevelState.Pregame)
+        {
+            UIP_SettingsMenu.SetActive(true);
+            UIP_MainMenu.SetActive(false);
+        }
+        else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
+        {
+            UIP_SettingsMenu.SetActive(true);
+            UIP_PauseMenu.SetActive(false);
+        }
     }
     void MM_QuitButtonPressed()
     {
@@ -127,14 +139,33 @@ public class UIManager : MonoBehaviour
     void SM_BackToMainMenuButtonPressed()
     {
         UIP_SettingsMenu.SetActive(false);
-        UIP_PauseMenu.SetActive(false);
-        UIP_MainMenu.SetActive(true);
+        if(GameManager.instance.currentLevelState == GameManager.LevelState.Pregame)
+        {
+            UIP_PauseMenu.SetActive(false);
+            UIP_MainMenu.SetActive(true);
+        }
+        else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
+        {
+            UIP_PauseMenu.SetActive(true);
+        }
     }
     void PM_PauseButtonPressed()
     {
         GameManager.instance.playerCanInput = UIP_PauseMenu.activeSelf;
         UIP_PauseMenu.SetActive(!UIP_PauseMenu.activeSelf);
+
+        if(UIP_SettingsMenu.activeSelf)
+        {
+            UIP_SettingsMenu.SetActive(false);
+            UIP_PauseMenu.SetActive(false);
+        }
+        else 
+        {
+        
+        }
+        
         GameManager.instance.PauseGame();
+
     }
 
     void EG_ReplayButtonPressed()
