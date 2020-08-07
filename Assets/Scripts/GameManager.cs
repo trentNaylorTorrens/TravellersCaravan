@@ -302,9 +302,9 @@ public class GameManager : MonoBehaviour
     {
         if(currentLevelState == LevelState.Paused)
         {
-            StartCoroutine(ChangeGameStates(1f, LevelState.Playing));
+            StartCoroutine(ChangeGameStates(0f, LevelState.Playing));
         }
-        else StartCoroutine(ChangeGameStates(1f, LevelState.Paused));
+        else StartCoroutine(ChangeGameStates(0f, LevelState.Paused));
     }
 
     public IEnumerator ChangeGameStates(float delay, LevelState nState)
@@ -328,12 +328,12 @@ public class GameManager : MonoBehaviour
 
     public void LoadSettings()
     {
-        int diff = PlayerPrefs.GetInt(GlobalSettings.LEVELDIFFICULTY);
+        int diff = PlayerPrefs.GetInt(GlobalSettings.LEVELDIFFICULTY,2);
         UIManager.Instance.difficultySlider.value = diff;
         UIManager.Instance.OnDifficultyChange();
 
-        UIManager.Instance.musicSlider.value = PlayerPrefs.GetFloat(GlobalSettings.MUSICVOLUME );
-        UIManager.Instance.soundSlider.value = PlayerPrefs.GetFloat(GlobalSettings.EFFECTSVOLUME);
+        UIManager.Instance.musicSlider.value = PlayerPrefs.GetFloat(GlobalSettings.MUSICVOLUME,100f);
+        UIManager.Instance.soundSlider.value = PlayerPrefs.GetFloat(GlobalSettings.EFFECTSVOLUME,100f);
     }
     private void OnEnable()
     {

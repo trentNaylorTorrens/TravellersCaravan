@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
         uiRemainingTime.text = "Time remaining: " + GameManager.instance.LevelTimer.ToString();
         if(GameManager.instance.currentLevelState == GameManager.LevelState.Playing || GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
         {
-            if (Input.GetKeyDown(KeyCode.Escape) && !UIP_MainMenu.activeSelf)
+            if (Input.GetKeyDown(KeyCode.Escape) && !UIP_MainMenu.activeSelf && !UIP_SettingsMenu.activeSelf)
             {
                 EventManager.instance.UIPauseButton();
             }
@@ -100,8 +100,8 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.instance.currentLevelState == GameManager.LevelState.Pregame)
         {
-            UIP_SettingsMenu.SetActive(true);
             UIP_MainMenu.SetActive(false);
+            UIP_SettingsMenu.SetActive(true);//needs delay here 
         }
         else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
         {

@@ -16,8 +16,8 @@ public class CameraManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnPlayButton += MainMenuToPlay;
-        EventManager.OnSettingsButton += MainMenuToSettings;
-        EventManager.SMOnBackToMainMenuButton += SettingsToMainMenu;
+        EventManager.OnSettingsButton += AnyToSettings;
+        EventManager.SMOnBackToMainMenuButton += SettingsToAny;
         EventManager.PMOnBackToMainMenuButton += PauseToMainMenu;
         EventManager.OnRestartLevel += SnapToGame;
     }
@@ -25,8 +25,8 @@ public class CameraManager : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnPlayButton -= MainMenuToPlay;
-        EventManager.OnSettingsButton -= MainMenuToSettings;
-        EventManager.SMOnBackToMainMenuButton -= SettingsToMainMenu;
+        EventManager.OnSettingsButton -= AnyToSettings;
+        EventManager.SMOnBackToMainMenuButton -= SettingsToAny;
         EventManager.PMOnBackToMainMenuButton -= PauseToMainMenu;
         EventManager.OnRestartLevel -= SnapToGame;
     }
@@ -42,10 +42,18 @@ public class CameraManager : MonoBehaviour
         myAnimator.SetBool("MainMenu", false);
     }
 
-    void MainMenuToSettings()
+    void AnyToSettings()
     {
-        myAnimator.SetBool("Settings", true);
-        myAnimator.SetBool("MainMenu", false);
+        if (GameManager.instance.currentLevelState == GameManager.LevelState.Pregame)
+        {
+            myAnimator.SetBool("Settings", true);
+            myAnimator.SetBool("MainMenu", false);
+        }
+        else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
+        {
+            myAnimator.SetBool("Settings", true);
+            myAnimator.SetBool("Game", false);
+        }
     }
 
     void PauseToMainMenu()
@@ -55,12 +63,19 @@ public class CameraManager : MonoBehaviour
         myAnimator.SetBool("Settings", false);
     }
 
-    void SettingsToMainMenu()
+   
+    void SettingsToAny()
     {
         if (GameManager.instance.currentLevelState == GameManager.LevelState.Pregame)
         {
             myAnimator.SetBool("MainMenu", true);
             myAnimator.SetBool("Game", false);
+            myAnimator.SetBool("Settings", false);
+        }
+        else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
+        {
+            myAnimator.SetBool("MainMenu", false);
+            myAnimator.SetBool("Game", true);
             myAnimator.SetBool("Settings", false);
         }
     }
