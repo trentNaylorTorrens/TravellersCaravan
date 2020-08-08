@@ -195,8 +195,11 @@ public class UIManager : MonoBehaviour
     {
         musicVolText.text = musicSlider.value.ToString();
         //convert slider to volume dB
-        float db = (-80 + ((musicSlider.value / 100) * 80));
-        AudioManager.Instance.audioMixer.SetFloat("MusicVolume", db);
+        // float db = (-80 + ((musicSlider.value / 100) * 80));
+
+        float db = AudioManager.LinearToDecibel(musicSlider.value);
+        
+        AudioManager.Instance.audioMixer.SetFloat("MusicVolume", db-40);
 
     }
 
@@ -204,8 +207,9 @@ public class UIManager : MonoBehaviour
     {
         soundVolText.text = soundSlider.value.ToString();
         //convert slider to volume dB
-        float db = (-80 + ((soundSlider.value / 100) * 80));
-        AudioManager.Instance.audioMixer.SetFloat("EffectsVolume", db);
+        // float db = (-80 + ((soundSlider.value / 100) * 80));
+        float db = AudioManager.LinearToDecibel(soundSlider.value);
+        AudioManager.Instance.audioMixer.SetFloat("EffectsVolume", db-40);
     }
    
 }
