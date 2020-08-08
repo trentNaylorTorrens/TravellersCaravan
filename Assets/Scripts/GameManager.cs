@@ -179,7 +179,7 @@ public class GameManager : MonoBehaviour
             allBoxes[secondItem.currentPosition].transform.GetComponentInChildren<Box>().CloseBox();
 
             //Add delay here for Transition
-            yield return StartCoroutine(IsTransitionDone(allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>(), "Idle"));
+            //yield return StartCoroutine(IsTransitionDone(allBoxes[firstItem.currentPosition].GetComponentInChildren<Animator>(), "Idle"));
             //Reenable colliders
             allBoxes[firstItem.currentPosition].transform.GetComponentInChildren<Collider>().enabled = true;//Enable the collider so it can be clicked again.
             allBoxes[secondItem.currentPosition].transform.GetComponentInChildren<Collider>().enabled = true;//Enable the collider so it can be clicked again.
@@ -294,7 +294,8 @@ public class GameManager : MonoBehaviour
         else
         {
             //Start from MainMenu
-            StartCoroutine(ChangeGameStates(3f, LevelState.Playing));
+            StartCoroutine(ChangeGameStates(1f, LevelState.Playing));
+            UIManager.Instance.UIP_GameHUD.SetActive(true);
         }
     }    
 

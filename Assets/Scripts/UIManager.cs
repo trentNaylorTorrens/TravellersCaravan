@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour
     public GameObject UIP_PauseMenu;
     public GameObject UIP_SettingsMenu;
     public GameObject UIP_EndGameMenu;
+    public GameObject UIP_GameHUD;
+    public GameObject UIO_PauseButton;
 
     public Text testWinText;
     public TMP_Text uiRemainingTime;
@@ -117,6 +119,7 @@ public class UIManager : MonoBehaviour
     void PM_ResumeButtonPressed()
     {
         UIP_PauseMenu.SetActive(false);
+        UIManager.Instance.UIO_PauseButton.SetActive(true);
         GameManager.instance.playerCanInput = true;
     }
 
@@ -132,6 +135,7 @@ public class UIManager : MonoBehaviour
     void PM_BackToMainMenuButtonPressed()
     {
         UIP_SettingsMenu.SetActive(false);
+        UIP_GameHUD.SetActive(false);
         UIP_PauseMenu.SetActive(false);
         UIP_MainMenu.SetActive(true);
         GameManager.instance.playerCanInput = false;
@@ -153,11 +157,13 @@ public class UIManager : MonoBehaviour
     {
         GameManager.instance.playerCanInput = UIP_PauseMenu.activeSelf;
         UIP_PauseMenu.SetActive(!UIP_PauseMenu.activeSelf);
+        UIManager.Instance.UIO_PauseButton.SetActive(false);
 
-        if(UIP_SettingsMenu.activeSelf)
+        if (UIP_SettingsMenu.activeSelf)
         {
             UIP_SettingsMenu.SetActive(false);
             UIP_PauseMenu.SetActive(false);
+            UIManager.Instance.UIP_GameHUD.SetActive(true);
         }
         else 
         {
