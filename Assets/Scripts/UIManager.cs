@@ -63,7 +63,6 @@ public class UIManager : MonoBehaviour
         EventManager.PMOnBackToMainMenuButton += PM_BackToMainMenuButtonPressed;
         EventManager.OnSettingsButton += MM_SettingsButtonPressed;
         EventManager.OnResumePlayButton += PM_ResumeButtonPressed;
-        EventManager.OnQuitButton += MM_QuitButtonPressed;
         EventManager.OnQuitGameButton += PM_QuitButton;
         EventManager.OnRestartLevel += MM_PlayButtonPressed;
         EventManager.OnReplayButton += EG_ReplayButtonPressed;
@@ -79,7 +78,6 @@ public class UIManager : MonoBehaviour
         EventManager.PMOnBackToMainMenuButton -= PM_BackToMainMenuButtonPressed;
         EventManager.OnSettingsButton -= MM_SettingsButtonPressed;
         EventManager.OnResumePlayButton -= PM_ResumeButtonPressed;
-        EventManager.OnQuitButton -= MM_QuitButtonPressed;
         EventManager.OnQuitGameButton -= PM_QuitButton;
         EventManager.OnRestartLevel -= MM_PlayButtonPressed;
         EventManager.OnReplayButton -= EG_ReplayButtonPressed;
@@ -111,7 +109,7 @@ public class UIManager : MonoBehaviour
             UIP_PauseMenu.SetActive(false);
         }
     }
-    void MM_QuitButtonPressed()
+    public void MM_QuitButtonPressed()
     {
         Application.Quit();
     }

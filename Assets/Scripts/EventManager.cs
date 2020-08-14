@@ -34,7 +34,6 @@ public class EventManager : MonoBehaviour
     public static event UIButton SMOnBackToMainMenuButton;
     public static event UIButton PMOnBackToMainMenuButton;
     public static event UIButton OnResumePlayButton;
-    public static event UIButton OnQuitButton;
     public static event UIButton OnQuitGameButton;
 
     //End Game UI
@@ -145,14 +144,7 @@ public class EventManager : MonoBehaviour
             OnReplayButton();
         }
     }
-    //Exit the application
-    public void UIQuitButton()
-    {
-        if (OnQuitButton != null)
-        {
-            OnQuitButton();
-        }
-    }
+   
 
     //Quit the current game.
     public void UiQuitGameButton()
