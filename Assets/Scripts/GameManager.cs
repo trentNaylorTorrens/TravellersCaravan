@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Threading;
 using UnityEditor;
+using UnityEngine.Analytics;
 
 public class GameManager : MonoBehaviour
 {
@@ -43,7 +44,7 @@ public class GameManager : MonoBehaviour
 
     //Level settings
 
-    public enum LevelState { Pregame, Playing, Paused, GameOver };
+    public enum LevelState { Pregame, Playing, Paused, GameOver, EndScreen };
     [Header("Level Settings")]
     public LevelState currentLevelState = LevelState.Pregame;
 
@@ -87,26 +88,30 @@ public class GameManager : MonoBehaviour
     {
         //Level state control
         
-        switch (currentLevelState)
-        {
-            case LevelState.Pregame:
-                break;
-            case LevelState.Playing:
-                levelTimer -= Time.deltaTime;
-                if (levelTimer <= 0)
-                    currentLevelState = LevelState.GameOver;
-                break;
-            case LevelState.GameOver:
-                playerCanInput = false;
-                if (currentMatches == totalMatchesRequired)
-                {
-                    EventManager.instance.GameOver(true);
-                }
-                else EventManager.instance.GameOver(false);
-                break;
-            case LevelState.Paused:
-                break;
-        }
+            switch (currentLevelState)
+            {
+                case LevelState.Pregame:
+                    break;
+                case LevelState.Playing:
+                    levelTimer -= Time.deltaTime;
+                    if (levelTimer <= 0)
+                        currentLevelState = LevelState.GameOver;
+                    break;
+                case LevelState.GameOver:
+                    playerCanInput = false;
+                    if (currentMatches == totalMatchesRequired)
+                    {
+                        EventManager.instance.GameOver(true);
+                    }
+                    else EventManager.instance.GameOver(false);
+                currentLevelState = LevelState.EndScreen;
+                    break;
+                case LevelState.Paused:
+                    break;
+                case LevelState.EndScreen:
+                    break;
+            }
+               
         if (playerCanInput)
         {
             //Main raycaster for selecting boxes
@@ -278,6 +283,8 @@ public class GameManager : MonoBehaviour
 
     void SelectionMatch()
     {
+        AudioManager.Instance.PlaySoundEffectOneShot(this.gameObject, AudioManager.Instance.correctMatch);
+
         currentMatches++;
         if (currentMatches == totalMatchesRequired)
         {
@@ -285,6 +292,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void SelectionMisMatch()
+    {
+        AudioManager.Instance.PlaySoundEffectOneShot(this.gameObject, AudioManager.Instance.incorrectMatch);
+
+    }
     public void StartGame()
     {
         if (currentLevelState == LevelState.Paused)
@@ -339,6 +351,7 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnPatternMatch += SelectionMatch;
+        EventManager.OnPatternMisMatch += SelectionMisMatch;
         EventManager.OnPlayButton += StartGame;
         EventManager.OnResumePlayButton += StartGame;
         EventManager.OnRestartLevel += StartGame;
@@ -349,6 +362,7 @@ public class GameManager : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnPatternMatch -= SelectionMatch;
+        EventManager.OnPatternMisMatch -= SelectionMisMatch;
         EventManager.OnPlayButton -= StartGame;
         EventManager.OnResumePlayButton -= StartGame;
         EventManager.OnRestartLevel -= StartGame;

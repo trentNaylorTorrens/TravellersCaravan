@@ -8,6 +8,15 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance;
     public AudioMixer audioMixer;
 
+    [Header("Game Event Sound")]
+    public AudioClip correctMatch;
+    public AudioClip incorrectMatch;
+    public AudioClip winMatch;
+    public AudioClip losematch;
+
+    [Header("UI Sound")]
+    public AudioClip sliderChange;
+
     private void Awake()
     {
         if(Instance != null)
@@ -17,19 +26,30 @@ public class AudioManager : MonoBehaviour
         else
         {
             Instance = this;
-        }
-        
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+        } 
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PlaySoundEffectOneShot(GameObject objectPlayingSound, AudioClip clipToPlay)
+    { 
+        if(objectPlayingSound.GetComponent<SoundHandler>() != null)
+        {
+            GetComponent<SoundHandler>().PlayOnce(clipToPlay);
+        }
+    }
+
+    public void PlaySoundEffect(GameObject objectPlayingSound, AudioClip clipToPlay)
     {
-        
+        if (objectPlayingSound.GetComponent<SoundHandler>() != null)
+        {
+            GetComponent<SoundHandler>().Play(clipToPlay);
+        }
+    }
+
+    //Generic Sound Functions
+
+    public void PlayUISliderEffect()
+    {
+        PlaySoundEffectOneShot(this.gameObject, sliderChange);
     }
 
     //Retrieved from - https://answers.unity.com/questions/283192/how-to-convert-decibel-number-to-audio-source-volu.html

@@ -85,6 +85,14 @@ public class UIManager : MonoBehaviour
     }
     void WinGameScreen(bool isWinner)
     {
+        if(isWinner)
+        {
+            AudioManager.Instance.PlaySoundEffectOneShot(this.gameObject, AudioManager.Instance.winMatch);
+        }
+        else
+        {
+            AudioManager.Instance.PlaySoundEffectOneShot(this.gameObject, AudioManager.Instance.losematch);
+        }
         UIP_EndGameMenu.SetActive(true);
         UIP_SettingsMenu.SetActive(false);
         GameManager.instance.playerCanInput = false;
@@ -191,6 +199,8 @@ public class UIManager : MonoBehaviour
 
     public void OnMusicVolumeChange()
     {
+        //Play sound
+       
         musicVolText.text = musicSlider.value.ToString();
         //convert slider to volume dB
         // float db = (-80 + ((musicSlider.value / 100) * 80));
@@ -203,6 +213,7 @@ public class UIManager : MonoBehaviour
 
     public void OnSoundVolumeChange()
     {
+      
         soundVolText.text = soundSlider.value.ToString();
         //convert slider to volume dB
         // float db = (-80 + ((soundSlider.value / 100) * 80));
