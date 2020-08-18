@@ -14,6 +14,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip winMatch;
     public AudioClip losematch;
 
+    public AudioClip menuMusic;
+    public AudioClip gameplayMusic;
+
     [Header("UI Sound")]
     public AudioClip sliderChange;
 
