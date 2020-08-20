@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     int boxSelection = 0; //Are we selecting the first or second box?
 
     //Level settings
-
+    public lb_BirdController birdControl;
     public enum LevelState { Pregame, Playing, Paused, GameOver, EndScreen };
     [Header("Level Settings")]
     public LevelState currentLevelState = LevelState.Pregame;
@@ -60,7 +60,9 @@ public class GameManager : MonoBehaviour
 
         //Put some error checking in here for Unity assignments.
         if (allBoxesMaster == null)
-            Debug.LogError("Assign Parent object that holds Boxes"); 
+            Debug.LogError("Assign Parent object that holds Boxes");
+
+        birdControl = GameObject.Find("_livingBirdsController").GetComponent<lb_BirdController>();
     }
 
     // Start is called before the first frame update
@@ -80,7 +82,7 @@ public class GameManager : MonoBehaviour
             EventManager.instance.RestartedLevel();
             GlobalSettings.gameIsReplay = false;
         }
-
+        SpawnSomeBirds();
     }
 
     // Update is called once per frame
@@ -207,6 +209,11 @@ public class GameManager : MonoBehaviour
         LevelDifficultyUpdate(newLevelDifficulty);
     }
 
+    IEnumerator SpawnSomeBirds()
+    {
+        yield return 2;
+        birdControl.SendMessage("SpawnAmount", 5);
+    }
     void LevelDifficultyUpdate(LevelDifficulty nDiff)
     {
         currentLevelDifficulty = nDiff;
