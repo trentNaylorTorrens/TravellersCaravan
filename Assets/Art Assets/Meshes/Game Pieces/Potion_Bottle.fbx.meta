@@ -3,7 +3,17 @@ guid: 0a2e0a61158aab14ca3b88cef914b441
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GamePieces_Mat
+    second: {fileID: 2100000, guid: 815d9ddd5da5d104b93cb2ef8c76b267, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Liquid_Crystal_Mat
+    second: {fileID: 2100000, guid: c3297f879401ac9499dee889a872888e, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
