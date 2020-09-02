@@ -96,7 +96,8 @@ public class UIManager : MonoBehaviour
         UIP_EndGameMenu.SetActive(true);
         UIP_SettingsMenu.SetActive(false);
         GameManager.instance.playerCanInput = false;
-        testWinText.text = "You are winner = " + isWinner.ToString();
+        UIManager.Instance.UIP_GameHUD.SetActive(false);
+        //testWinText.text = "You are winner = " + isWinner.ToString();
     }
     
     void MM_PlayButtonPressed()

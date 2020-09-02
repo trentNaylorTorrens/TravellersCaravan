@@ -20381,6 +20381,8 @@ MonoBehaviour:
   incorrectMatch: {fileID: 8300000, guid: 6f8e718d0155f394698a7d03931a887d, type: 3}
   winMatch: {fileID: 8300000, guid: 8e5b8073e676e0d4aad98105af158e0f, type: 3}
   losematch: {fileID: 8300000, guid: 4f3e981b4fb323940aab14568b0f25a2, type: 3}
+  boxOpening: {fileID: 8300000, guid: c439ebe19dd4284488265e6b3f8fc242, type: 3}
+  boxClosing: {fileID: 8300000, guid: 9880863fc3a755b48a14878d64c17c1e, type: 3}
   menuMusic: {fileID: 8300000, guid: 7750c948407f08e4584c062a9a51f06a, type: 3}
   gameplayMusic: {fileID: 8300000, guid: cefe0c3cbf93b844a99d8ea918c64a13, type: 3}
   sliderChange: {fileID: 8300000, guid: c439ebe19dd4284488265e6b3f8fc242, type: 3}

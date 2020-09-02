@@ -13,6 +13,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip incorrectMatch;
     public AudioClip winMatch;
     public AudioClip losematch;
+    public AudioClip boxOpening;
+    public AudioClip boxClosing;
 
     public AudioClip menuMusic;
     public AudioClip gameplayMusic;
