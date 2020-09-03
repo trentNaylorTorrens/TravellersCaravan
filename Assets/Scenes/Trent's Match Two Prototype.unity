@@ -20483,7 +20483,7 @@ MonoBehaviour:
   boxClosing: {fileID: 8300000, guid: 9880863fc3a755b48a14878d64c17c1e, type: 3}
   menuMusic: {fileID: 8300000, guid: 7750c948407f08e4584c062a9a51f06a, type: 3}
   gameplayMusic: {fileID: 8300000, guid: cefe0c3cbf93b844a99d8ea918c64a13, type: 3}
-  sliderChange: {fileID: 8300000, guid: c439ebe19dd4284488265e6b3f8fc242, type: 3}
+  sliderChange: {fileID: 8300000, guid: 25f31f27e379ee54d9d39042136fc6b1, type: 3}
 --- !u!114 &1892081890
 MonoBehaviour:
   m_ObjectHideFlags: 0
