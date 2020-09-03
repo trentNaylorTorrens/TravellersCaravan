@@ -28,7 +28,10 @@ public class UIManager : MonoBehaviour
     public TMP_Text musicVolText;
     public UnityEngine.UI.Slider soundSlider;
     public TMP_Text soundVolText;
-    
+
+    [Header("Game Over Screen")]
+    public GameObject winImage;
+    public GameObject loseImage;
 
     // Start is called before the first frame update
     void Awake()
@@ -88,10 +91,14 @@ public class UIManager : MonoBehaviour
         if(isWinner)
         {
             AudioManager.Instance.PlaySoundEffectOneShot(this.gameObject, AudioManager.Instance.winMatch);
+            winImage.SetActive(true);
+            loseImage.SetActive(false);
         }
         else
         {
             AudioManager.Instance.PlaySoundEffectOneShot(this.gameObject, AudioManager.Instance.losematch);
+            winImage.SetActive(false);
+            loseImage.SetActive(true);
         }
         UIP_EndGameMenu.SetActive(true);
         UIP_SettingsMenu.SetActive(false);
