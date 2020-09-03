@@ -16,8 +16,8 @@ public class AudioManager : MonoBehaviour
     public AudioClip boxOpening;
     public AudioClip boxClosing;
 
-    public AudioClip menuMusic;
-    public AudioClip gameplayMusic;
+    public GameObject menuMusic;
+    public GameObject gameplayMusic;
 
     [Header("UI Sound")]
     public AudioClip sliderChange;
@@ -50,8 +50,15 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void TransistionMusic(GameObject sourceone, GameObject sourcetwo)
+    {
+        sourcetwo.GetComponent<AudioSource>().Play();
+        sourcetwo.GetComponent<AudioSource>().volume = 0;
+        iTween.AudioTo(sourceone, 0, 1, 1);
+        iTween.AudioTo(sourcetwo, 1, 1, 1);
+    }
     //Generic Sound Functions
-
+   
     public void PlayUISliderEffect()
     {
         PlaySoundEffectOneShot(this.gameObject, sliderChange);

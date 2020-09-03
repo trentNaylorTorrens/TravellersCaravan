@@ -202,6 +202,7 @@ public class GameManager : MonoBehaviour
     {
         
         currentLevelState = LevelState.Pregame;
+        AudioManager.Instance.TransistionMusic(AudioManager.Instance.gameplayMusic, AudioManager.Instance.menuMusic);
         yield return null;
         //Set level timer
         int diff = (int)UIManager.Instance.difficultySlider.value;

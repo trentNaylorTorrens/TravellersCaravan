@@ -6,9 +6,16 @@ using UnityEngine;
 public class SoundHandler : MonoBehaviour
 {
     private AudioSource audioSource;
+
+    public bool dontDestroy = false;
     public void Awake()
     {
         audioSource = GetComponent<AudioSource>();
+        if(dontDestroy)
+        {
+            DontDestroyOnLoad(this.gameObject);
+        }
+        
     }
     public void PlayOnce(AudioClip clip)
     {

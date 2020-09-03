@@ -111,6 +111,7 @@ public class UIManager : MonoBehaviour
     {
         UIP_MainMenu.SetActive(false);
         GameManager.instance.playerCanInput = true;
+        AudioManager.Instance.TransistionMusic(AudioManager.Instance.menuMusic, AudioManager.Instance.gameplayMusic);
     }
     void MM_SettingsButtonPressed()
     {
