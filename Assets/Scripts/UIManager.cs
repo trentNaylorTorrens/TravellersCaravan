@@ -173,7 +173,7 @@ public class UIManager : MonoBehaviour
         GameManager.instance.playerCanInput = UIP_PauseMenu.activeSelf;
         UIP_PauseMenu.SetActive(!UIP_PauseMenu.activeSelf);
         UIManager.Instance.UIO_PauseButton.SetActive(false);
-
+        UIManager.Instance.difficultySlider.interactable = !UIP_PauseMenu.activeSelf;
         if (UIP_SettingsMenu.activeSelf)
         {
             UIP_SettingsMenu.SetActive(false);

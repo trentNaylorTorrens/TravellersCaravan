@@ -50,7 +50,9 @@ public class GameManager : MonoBehaviour
 
     public enum LevelDifficulty { Tutorial, Easy, Medium, Hard, Nightmare };
     public LevelDifficulty currentLevelDifficulty = LevelDifficulty.Easy;
-
+    public LiquidVolumeAnimator hourGlassSandSender;
+    
+    public LiquidVolumeAnimator hourGlassSandReciever;
     public float levelTimer;
     public float LevelTimer { get => levelTimer; }
 
@@ -95,11 +97,14 @@ public class GameManager : MonoBehaviour
                 case LevelState.Pregame:
                     break;
                 case LevelState.Playing:
-                    levelTimer -= Time.deltaTime;
-                    if (levelTimer <= 0)
+                    hourGlassSandSender.GetComponentInChildren<MeshLiquidEmission>().emitting = true;
+                    levelTimer -= Time.deltaTime; //just for debug.
+                   // if (levelTimer <= 0)
+                   if(hourGlassSandSender.level <=0 || hourGlassSandReciever.level >=1)
                         currentLevelState = LevelState.GameOver;
                     break;
                 case LevelState.GameOver:
+                    hourGlassSandSender.GetComponentInChildren<MeshLiquidEmission>().emitting = false;
                     playerCanInput = false;
                     if (currentMatches == totalMatchesRequired)
                     {
@@ -109,7 +114,8 @@ public class GameManager : MonoBehaviour
                 currentLevelState = LevelState.EndScreen;
                     break;
                 case LevelState.Paused:
-                    break;
+                    hourGlassSandSender.GetComponentInChildren<MeshLiquidEmission>().emitting = false;
+                break;
                 case LevelState.EndScreen:
                     break;
             }
@@ -237,6 +243,10 @@ public class GameManager : MonoBehaviour
                 levelTimer = GlobalSettings.Instance.NightMareDifficultyTimer;
                 break;
         }
+
+        //Convert level timer to appropriate values for hour glass effect
+        MeshLiquidEmission mle = hourGlassSandSender.GetComponentInChildren<MeshLiquidEmission>();
+        mle.volumeOfParticles = levelTimer * mle.emissionSpeed;
     }
 
     void SetupItems()

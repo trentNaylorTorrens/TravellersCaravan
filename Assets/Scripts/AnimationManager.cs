@@ -6,6 +6,7 @@ public class AnimationManager : MonoBehaviour
 {
     public Animator sidePanelAnimator;
     public Animator caravanAnimator;
+    public Animator hourGlassAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +26,8 @@ public class AnimationManager : MonoBehaviour
         EventManager.PMOnBackToMainMenuButton += SidePanelClose;
         EventManager.OnReplayButton += SidePanelClose;
         EventManager.OnRestartLevel += SidePanelOpen;
+        EventManager.OnPlayButton += TimerStart;
+        EventManager.OnRestartLevel += TimerStart;
     }
 
     private void OnDisable()
@@ -33,6 +36,8 @@ public class AnimationManager : MonoBehaviour
         EventManager.PMOnBackToMainMenuButton -= SidePanelClose;
         EventManager.OnReplayButton -= SidePanelClose;
         EventManager.OnRestartLevel -= SidePanelOpen;
+        EventManager.OnPlayButton -= TimerStart;
+        EventManager.OnRestartLevel -= TimerStart;
     }
 
     void SidePanelOpen()
@@ -43,5 +48,10 @@ public class AnimationManager : MonoBehaviour
     void SidePanelClose()
     {
         sidePanelAnimator.SetTrigger("Close");
+    }
+
+    void TimerStart()
+    {
+        hourGlassAnimator.SetTrigger("StartTimer");
     }
 }

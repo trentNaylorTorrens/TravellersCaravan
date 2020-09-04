@@ -10,7 +10,7 @@ public class LiquidAbsorptionV2 : MonoBehaviour {
     public MeshLiquidEmission LiquidEmission;
     public LiquidVolumeAnimator LVA;
     // Use this for initialization
-    float particleValue = 1;
+    public float particleValue = 1;
 
     void Start () {
         if(LVA == null)

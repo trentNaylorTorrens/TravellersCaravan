@@ -29,6 +29,7 @@ Transform:
   m_Children:
   - {fileID: 4495033013116512358}
   - {fileID: 4366541773328374284}
+  - {fileID: 7175782396021714982}
   m_Father: {fileID: 4666890376120476561}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -122,8 +123,9 @@ GameObject:
   - component: {fileID: 4366541773328374284}
   - component: {fileID: 843989493735033178}
   - component: {fileID: 7747372197448912900}
+  - component: {fileID: 8464111136767280997}
   m_Layer: 0
-  m_Name: Sand 1
+  m_Name: Sand1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,7 +139,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4744739047857065428}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.881784e-18, y: 0.145, z: -0.0000000047683715}
+  m_LocalPosition: {x: 0, y: 0.145, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1116234633753147875}
@@ -169,7 +171,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: a0a1a0f0595c9d14f899e0d6ca224ef7, type: 3}
+  - {fileID: 2100000, guid: da2dab93f98398145a66462fbd7c178d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -190,6 +192,71 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8464111136767280997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4744739047857065428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa316a3d12ddaa4e83caf66ca7e9804, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mats: []
+  level: 0.507
+  minMaxBounds: {x: 0, y: 0}
+  mf: {fileID: 0}
+  mr: {fileID: 0}
+  m: {fileID: 0}
+  DebugAnchor: 0
+  debugSize: 1
+  _anchorLength: 0.5
+  dampening: 0
+  anchor: {x: 0, y: 0, z: 0}
+  anchorVelocity: {x: 0, y: 0, z: 0}
+  transformedPoint: {x: 0, y: 0, z: 0}
+  prevTransformedPoint: {x: 0, y: 0, z: 0}
+  calculateTextureProjection: 1
+  TextureSize: 1
+  TextureSizeScalar: 1
+  texCurveSize:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  TopLeft: {x: 0, y: 0, z: 0}
+  TopRight: {x: 0, y: 0, z: 0}
+  BottomLeft: {x: 0, y: 0, z: 0}
+  BottomRight: {x: 0, y: 0, z: 0}
+  ExposedLiquidT: {fileID: 0}
+  GravityDirection: {x: 0, y: -1, z: 0}
+  normalizeGravityDirection: 1
+  verts: []
+  cPos: {x: 0, y: 0, z: 0}
+  finalAnchor: {x: 0, y: 0, z: 0}
+  finalPoint: {x: 0, y: 0, z: 0}
+  shaderNames: []
 --- !u!1 &5977250383142181701
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,7 +274,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4495033013116512358
 Transform:
   m_ObjectHideFlags: 0
@@ -349,6 +416,151 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &8321933960710970256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7175782396021714982}
+  - component: {fileID: 7211237998012830345}
+  - component: {fileID: 5872725092007208781}
+  - component: {fileID: 6367227785762187100}
+  m_Layer: 0
+  m_Name: Sand2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7175782396021714982
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321933960710970256}
+  m_LocalRotation: {x: -0.000000119209275, y: -0.000000030740804, z: -1, w: 0.00000053577935}
+  m_LocalPosition: {x: -0, y: 0.1414, z: -0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1116234633753147875}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -180.00002}
+--- !u!33 &7211237998012830345
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321933960710970256}
+  m_Mesh: {fileID: 1445429886155621308, guid: a0a1a0f0595c9d14f899e0d6ca224ef7, type: 3}
+--- !u!23 &5872725092007208781
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321933960710970256}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: da2dab93f98398145a66462fbd7c178d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!114 &6367227785762187100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321933960710970256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaa316a3d12ddaa4e83caf66ca7e9804, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mats: []
+  level: 0.507
+  minMaxBounds: {x: 0, y: 0}
+  mf: {fileID: 0}
+  mr: {fileID: 0}
+  m: {fileID: 0}
+  DebugAnchor: 0
+  debugSize: 1
+  _anchorLength: 0.5
+  dampening: 0
+  anchor: {x: 0, y: 0, z: 0}
+  anchorVelocity: {x: 0, y: 0, z: 0}
+  transformedPoint: {x: 0, y: 0, z: 0}
+  prevTransformedPoint: {x: 0, y: 0, z: 0}
+  calculateTextureProjection: 1
+  TextureSize: 1
+  TextureSizeScalar: 1
+  texCurveSize:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  TopLeft: {x: 0, y: 0, z: 0}
+  TopRight: {x: 0, y: 0, z: 0}
+  BottomLeft: {x: 0, y: 0, z: 0}
+  BottomRight: {x: 0, y: 0, z: 0}
+  ExposedLiquidT: {fileID: 0}
+  GravityDirection: {x: 0, y: -1, z: 0}
+  normalizeGravityDirection: 1
+  verts: []
+  cPos: {x: 0, y: 0, z: 0}
+  finalAnchor: {x: 0, y: 0, z: 0}
+  finalPoint: {x: 0, y: 0, z: 0}
+  shaderNames: []
 --- !u!1 &8547684529715761538
 GameObject:
   m_ObjectHideFlags: 0
