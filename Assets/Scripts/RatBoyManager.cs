@@ -17,7 +17,7 @@ public class RatBoyManager : MonoBehaviour
     private void OnEnable()
     {
         EventManager.OnPauseButton += RatBoyFadeOut;
-        EventManager.SMOnBackToMainMenuButton += RatBoyFadeIn;
+        
         EventManager.OnResumePlayButton += RatBoyFadeIn;
 
         EventManager.OnPatternMatch += RatBoyPatternMatch;
@@ -29,7 +29,7 @@ public class RatBoyManager : MonoBehaviour
     private void OnDisable()
     {
         EventManager.OnPauseButton -= RatBoyFadeOut;
-        EventManager.SMOnBackToMainMenuButton -= RatBoyFadeIn;
+        
         EventManager.OnResumePlayButton -= RatBoyFadeIn;
 
 
