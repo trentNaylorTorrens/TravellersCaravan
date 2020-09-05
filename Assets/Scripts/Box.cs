@@ -26,13 +26,13 @@ public class Box : MonoBehaviour
     public void RevealBox()
     {
         AudioManager.Instance.PlaySoundEffectOneShot(this.gameObject, AudioManager.Instance.boxOpening);
-        iTween.ValueTo(gameObject, iTween.Hash("from", 0.70f, "to", 1f, "time", 0.5f, "onupdatetarget", gameObject, "onupdate", "DissolveOnUpdateCallBack"));
+        iTween.ValueTo(gameObject, iTween.Hash("from", 0f, "to", 1f, "time", 0.5f, "onupdatetarget", gameObject, "onupdate", "DissolveOnUpdateCallBack"));
         
     }
 
     public void CloseBox()
     {
-        iTween.ValueTo(gameObject, iTween.Hash("from", 1f, "to", 0.7f, "time", 1f, "onupdatetarget", gameObject, "onupdate", "DissolveOnUpdateCallBack", "easetype", iTween.EaseType.easeInCirc));
+        iTween.ValueTo(gameObject, iTween.Hash("from", 1f, "to", 0f, "time", 1f, "onupdatetarget", gameObject, "onupdate", "DissolveOnUpdateCallBack"));
         AudioManager.Instance.PlaySoundEffectOneShot(this.gameObject, AudioManager.Instance.boxClosing);
     }
 

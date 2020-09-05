@@ -16986,7 +16986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1496530471
 RectTransform:
   m_ObjectHideFlags: 0
@@ -28747,6 +28747,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cube
       objectReference: {fileID: 0}
+    - target: {fileID: 3948007211545017886, guid: 545a46026f8808b4aa5c7a19db370837,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8e5e5e809d6c12d4ab651ff9dea58e2f, type: 2}
     - target: {fileID: 3948007211545017888, guid: 545a46026f8808b4aa5c7a19db370837,
         type: 3}
       propertyPath: m_LocalPosition.x
