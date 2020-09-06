@@ -35,6 +35,7 @@ public class EventManager : MonoBehaviour
     public static event UIButton PMOnBackToMainMenuButton;
     public static event UIButton OnResumePlayButton;
     public static event UIButton OnQuitGameButton;
+    public static event UIButton OnCreditButton;
 
     //End Game UI
     public static event UIButton OnReplayButton;
@@ -138,6 +139,14 @@ public class EventManager : MonoBehaviour
     }
 
     public void UIReplayButton()
+    {
+        if (OnReplayButton != null)
+        {
+            OnReplayButton();
+        }
+    }
+   
+    public void UICreditButton()
     {
         if (OnReplayButton != null)
         {
