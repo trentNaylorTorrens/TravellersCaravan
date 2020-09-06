@@ -3,7 +3,27 @@ guid: d642a666902cc944aaf82d0530e30709
 ModelImporter:
   serializedVersion: 19300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: CanvasMat
+    second: {fileID: 2100000, guid: 9c5dfdf749962fe409d24c81242098cb, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: GlassMat
+    second: {fileID: 2100000, guid: 8ca182fac6f3561478ce637aa70f9f28, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MetalMat
+    second: {fileID: 2100000, guid: c6d0cc20582ca3b458fddf8c94e2bab4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: WoodMat
+    second: {fileID: 2100000, guid: 28c3dd773744bb84dad2b3c89220739a, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
