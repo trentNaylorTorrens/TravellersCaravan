@@ -148,9 +148,9 @@ public class EventManager : MonoBehaviour
    
     public void UICreditButton()
     {
-        if (OnReplayButton != null)
+        if (OnCreditButton != null)
         {
-            OnReplayButton();
+            OnCreditButton();
         }
     }
    

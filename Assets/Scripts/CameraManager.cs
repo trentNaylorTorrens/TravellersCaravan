@@ -20,6 +20,7 @@ public class CameraManager : MonoBehaviour
         EventManager.SMOnBackToMainMenuButton += SettingsToAny;
         EventManager.PMOnBackToMainMenuButton += PauseToMainMenu;
         EventManager.OnRestartLevel += SnapToGame;
+        EventManager.OnCreditButton += MainMenuToCredits;
     }
 
     private void OnDisable()
@@ -29,6 +30,8 @@ public class CameraManager : MonoBehaviour
         EventManager.SMOnBackToMainMenuButton -= SettingsToAny;
         EventManager.PMOnBackToMainMenuButton -= PauseToMainMenu;
         EventManager.OnRestartLevel -= SnapToGame;
+        EventManager.OnCreditButton -= MainMenuToCredits;
+
     }
 
     void SnapToGame()
@@ -63,7 +66,13 @@ public class CameraManager : MonoBehaviour
         myAnimator.SetBool("Settings", false);
     }
 
-   
+    void MainMenuToCredits()
+    {
+        myAnimator.SetBool("MainMenu", true);
+        myAnimator.SetBool("Game", false);
+        myAnimator.SetBool("Settings", false);
+    }
+
     void SettingsToAny()
     {
         if (GameManager.instance.currentLevelState == GameManager.LevelState.Pregame)
