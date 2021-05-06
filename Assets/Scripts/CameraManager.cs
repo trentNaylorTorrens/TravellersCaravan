@@ -43,6 +43,7 @@ public class CameraManager : MonoBehaviour
     {
         myAnimator.SetBool("Game", true);
         myAnimator.SetBool("MainMenu", false);
+        myAnimator.SetBool("Credits", false);
     }
 
     void AnyToSettings()
@@ -51,11 +52,13 @@ public class CameraManager : MonoBehaviour
         {
             myAnimator.SetBool("Settings", true);
             myAnimator.SetBool("MainMenu", false);
+            myAnimator.SetBool("Credits", false);
         }
         else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
         {
             myAnimator.SetBool("Settings", true);
             myAnimator.SetBool("Game", false);
+            myAnimator.SetBool("Credits", false);
         }
     }
 
@@ -64,13 +67,15 @@ public class CameraManager : MonoBehaviour
         myAnimator.SetBool("MainMenu", true);
         myAnimator.SetBool("Game", false);
         myAnimator.SetBool("Settings", false);
+        myAnimator.SetBool("Credits", false);
     }
 
     void MainMenuToCredits()
     {
-        myAnimator.SetBool("MainMenu", true);
+        myAnimator.SetBool("MainMenu", false);
         myAnimator.SetBool("Game", false);
         myAnimator.SetBool("Settings", false);
+        myAnimator.SetBool("Credits", true);
     }
 
     void SettingsToAny()
@@ -80,12 +85,14 @@ public class CameraManager : MonoBehaviour
             myAnimator.SetBool("MainMenu", true);
             myAnimator.SetBool("Game", false);
             myAnimator.SetBool("Settings", false);
+            myAnimator.SetBool("Credits", false);
         }
         else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
         {
             myAnimator.SetBool("MainMenu", false);
             myAnimator.SetBool("Game", true);
             myAnimator.SetBool("Settings", false);
+            myAnimator.SetBool("Credits", false);
         }
     }
 }
