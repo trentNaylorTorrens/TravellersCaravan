@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     public GameObject UIP_EndGameMenu;
     public GameObject UIP_GameHUD;
     public GameObject UIO_PauseButton;
+    public GameObject UIP_CreditMenu;
+    public GameObject UIP_MMButton;
 
     public Text testWinText;
     public TMP_Text uiRemainingTime;
@@ -69,6 +71,8 @@ public class UIManager : MonoBehaviour
         EventManager.OnQuitGameButton += PM_QuitButton;
         EventManager.OnRestartLevel += MM_PlayButtonPressed;
         EventManager.OnReplayButton += EG_ReplayButtonPressed;
+        EventManager.OnCreditButton += MM_CreditButtonPressed;
+        EventManager.OnQuitGameButton += CM_QuitButton;
         
     }
 
@@ -84,7 +88,9 @@ public class UIManager : MonoBehaviour
         EventManager.OnQuitGameButton -= PM_QuitButton;
         EventManager.OnRestartLevel -= MM_PlayButtonPressed;
         EventManager.OnReplayButton -= EG_ReplayButtonPressed;
-        
+        EventManager.OnCreditButton -= MM_CreditButtonPressed;
+        EventManager.OnQuitGameButton -= CM_QuitButton;
+
     }
     void WinGameScreen(bool isWinner)
     {
@@ -102,6 +108,8 @@ public class UIManager : MonoBehaviour
         }
         UIP_EndGameMenu.SetActive(true);
         UIP_SettingsMenu.SetActive(false);
+        UIP_CreditMenu.SetActive(false);
+        UIP_MMButton.SetActive(false);
         GameManager.instance.playerCanInput = false;
         UIManager.Instance.UIO_PauseButton.SetActive(false);
         //testWinText.text = "You are winner = " + isWinner.ToString();
@@ -110,6 +118,8 @@ public class UIManager : MonoBehaviour
     void MM_PlayButtonPressed()
     {
         UIP_MainMenu.SetActive(false);
+        UIP_CreditMenu.SetActive(false);
+        UIP_MMButton.SetActive(false);
         GameManager.instance.playerCanInput = true;
         AudioManager.Instance.TransistionMusic(AudioManager.Instance.menuMusic, AudioManager.Instance.gameplayMusic);
     }
@@ -119,11 +129,15 @@ public class UIManager : MonoBehaviour
         {
             UIP_MainMenu.SetActive(false);
             UIP_SettingsMenu.SetActive(true);//needs delay here 
+            UIP_CreditMenu.SetActive(false);
+            UIP_MMButton.SetActive(false);
         }
         else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
         {
             UIP_SettingsMenu.SetActive(true);
             UIP_PauseMenu.SetActive(false);
+            UIP_CreditMenu.SetActive(false);
+            UIP_MMButton.SetActive(false);
         }
     }
     public void MM_QuitButtonPressed()
@@ -134,6 +148,8 @@ public class UIManager : MonoBehaviour
     void PM_ResumeButtonPressed()
     {
         UIP_PauseMenu.SetActive(false);
+        UIP_CreditMenu.SetActive(false);
+        UIP_MMButton.SetActive(false);
         UIManager.Instance.UIO_PauseButton.SetActive(true);
         GameManager.instance.playerCanInput = true;
     }
@@ -153,6 +169,8 @@ public class UIManager : MonoBehaviour
         UIP_GameHUD.SetActive(false);
         UIP_PauseMenu.SetActive(false);
         UIP_MainMenu.SetActive(true);
+        UIP_CreditMenu.SetActive(false);
+        UIP_MMButton.SetActive(false);
         GameManager.instance.playerCanInput = false;
     }
     void SM_BackToMainMenuButtonPressed()
@@ -162,6 +180,8 @@ public class UIManager : MonoBehaviour
         {
             UIP_PauseMenu.SetActive(false);
             UIP_MainMenu.SetActive(true);
+            UIP_CreditMenu.SetActive(false);
+            UIP_MMButton.SetActive(false);
         }
         else if (GameManager.instance.currentLevelState == GameManager.LevelState.Paused)
         {
@@ -178,6 +198,8 @@ public class UIManager : MonoBehaviour
         {
             UIP_SettingsMenu.SetActive(false);
             UIP_PauseMenu.SetActive(false);
+            UIP_CreditMenu.SetActive(false);
+            UIP_MMButton.SetActive(false);
             UIManager.Instance.UIP_GameHUD.SetActive(true);
         }
         else 
@@ -193,9 +215,27 @@ public class UIManager : MonoBehaviour
     {
         GlobalSettings.gameIsReplay = true;
         UIP_EndGameMenu.SetActive(false);
+        UIP_CreditMenu.SetActive(false);
+        UIP_MMButton.SetActive(false);
         GameManager.instance.QuitGame();
     }
-   
+
+    void MM_CreditButtonPressed()
+    {
+        UIP_SettingsMenu.SetActive(false);
+        UIP_GameHUD.SetActive(false);
+        UIP_PauseMenu.SetActive(false);
+        UIP_MainMenu.SetActive(false);
+        UIP_CreditMenu.SetActive(true);
+        UIP_MMButton.SetActive(true);
+        GameManager.instance.playerCanInput = false;
+    }
+
+    void CM_QuitButton()
+    {
+
+    }
+
     //Settings Menu
     public void OnDifficultyChange()
     {

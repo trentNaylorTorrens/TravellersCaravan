@@ -153,7 +153,14 @@ public class EventManager : MonoBehaviour
             OnCreditButton();
         }
     }
-   
+
+    public void UIMMButton()
+    {
+        if (OnQuitGameButton != null)
+        {
+            OnQuitGameButton();
+        }
+    }
 
     //Quit the current game.
     public void UiQuitGameButton()
